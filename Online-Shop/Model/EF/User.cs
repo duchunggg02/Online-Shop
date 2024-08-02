@@ -1,4 +1,4 @@
-namespace Model.EF
+﻿namespace Model.EF
 {
     using System;
     using System.Collections.Generic;
@@ -11,22 +11,30 @@ namespace Model.EF
     {
         public int ID { get; set; }
 
+        [Required]
         [StringLength(20)]
+        [Display(Name="Tên đăng nhập")]
         public string UserName { get; set; }
 
+        [Required]
         [StringLength(32)]
+        [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Họ tên")]
         public string Name { get; set; }
 
         [StringLength(10)]
+        [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
 
         [StringLength(30)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Địa chỉ")]
         public string Address { get; set; }
 
         [StringLength(50)]
@@ -39,6 +47,7 @@ namespace Model.EF
 
         public DateTime? UpdatedDate { get; set; }
 
-        public bool? Status { get; set; }
+        [Display(Name = "Trạng thái")]
+        public bool Status { get; set; }
     }
 }
