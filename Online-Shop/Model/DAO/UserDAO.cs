@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PagedList;
+using System.Data.Entity;
 
 namespace Model.DAO
 {
@@ -24,6 +25,7 @@ namespace Model.DAO
 
         public int AddUser(User user)
         {
+            user.CreatedDate = DateTime.Now;
             db.Users.Add(user);
             db.SaveChanges();
             return user.ID;
@@ -64,6 +66,43 @@ namespace Model.DAO
         public User GetUserByName(string userName)
         {
             return db.Users.SingleOrDefault(x => x.UserName == userName);
+        }
+
+        public bool UpdateUser(User u)
+        {
+            try
+            {
+                var user = db.Users.Find(u.ID);
+                user.Name = u.Name;
+                user.Address = u.Address;
+                user.Phone = u.Phone;
+                user.Email = u.Email;
+                //user.UpdatedBy = u.UpdatedBy;
+                user.UpdatedDate = DateTime.Now;
+                user.Status = u.Status;
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool DeleteUser(int id)
+        {
+            try
+            {
+                var user = db.Users.Find(id);
+                db.Users.Remove(user);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
