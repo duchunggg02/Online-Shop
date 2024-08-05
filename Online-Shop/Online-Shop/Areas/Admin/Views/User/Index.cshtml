@@ -36,13 +36,12 @@
                             <td>@item.Address</td>
                             <td>
                                 <a href="/Admin/User/Edit/@item.ID">Cập nhật</a>
-                                @*<a href="/Admin/User/Delete/@item.ID">Xóa</a>*@
                                 @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions
-                           {
-                               Confirm = "Bạn có chắc chắn muốn xóa?",
-                               OnComplete = "$(#row_" + @item.ID + ").remove()",
-                               HttpMethod = "Delete"
-                           })
+                                    {
+                                        Confirm = "Bạn có chắc chắn muốn xóa?",
+                                        OnComplete = "$(#row_" + @item.ID + ").remove()",
+                                        HttpMethod = "Delete"
+                                    })
                             </td>
                         </tr>
                     }
