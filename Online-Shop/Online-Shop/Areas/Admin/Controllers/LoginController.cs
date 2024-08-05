@@ -43,5 +43,12 @@ namespace Online_Shop.Areas.Admin.Controllers
             }
             return View("Index");
         }
+
+        public ActionResult Logout()
+        {
+            Session.Clear(); // Xóa tất cả các session
+            return RedirectToAction("Index");
+        }
+
     }
 }

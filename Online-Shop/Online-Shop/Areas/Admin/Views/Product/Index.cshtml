@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Model.EF.User>
+﻿@model PagedList.IPagedList<Model.EF.Product>
 @using PagedList.Mvc;
 
 @{
@@ -7,7 +7,7 @@
 }
 
 @section header {
-    Danh sách người dùng
+    Danh sách sản phẩm
 }
 
 <div class="card shadow mb-4">
@@ -19,30 +19,30 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Tên đăng nhập</th>
-                        <th>Họ tên</th>
-                        <th>Email</th>
-                        <th>Địa chỉ</th>
-                        <th></th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá tiền</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.UserName</td>
-                            <td>@item.Name</td>
-                            <td>@item.Email</td>
-                            <td>@item.Address</td>
                             <td>
-                                <a href="/Admin/User/Edit/@item.ID">Cập nhật</a>
+                                <img src="@item.Image" alt="@item.Name" width="100" />
+                            </td>
+                            <td>@item.Name</td>
+                            <td>@item.Price</td>
+                            <td>
+                                <a href="/Admin/Product/Edit/@item.ID" class="btn btn-success">Cập nhật</a>
                                 @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions
                                     {
                                         Confirm = "Bạn có chắc chắn muốn xóa?",
                                         OnComplete = "$(#row_" + @item.ID + ").remove()",
                                         OnSuccess = "location.reload();",
                                         HttpMethod = "Delete"
-                                    })
+                                    }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }
