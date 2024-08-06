@@ -29,6 +29,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                     var userSession = new UserLogin();
                     userSession.UserName = user.UserName;
                     userSession.Id = user.ID;
+                    userSession.Name = user.FirstName;
                     Session.Add("UserLogin", userSession);// thêm UserLogin vào session
                     return RedirectToAction("Index", "Home");
                 }
@@ -39,7 +40,7 @@ namespace Online_Shop.Areas.Admin.Controllers
             }
             else
             {
-                ModelState.AddModelError("","Dữ liệu bị lỗi!!");
+                ModelState.AddModelError("", "Dữ liệu bị lỗi!!");
             }
             return View("Index");
         }
@@ -49,6 +50,5 @@ namespace Online_Shop.Areas.Admin.Controllers
             Session.Clear(); // Xóa tất cả các session
             return RedirectToAction("Index");
         }
-
     }
 }

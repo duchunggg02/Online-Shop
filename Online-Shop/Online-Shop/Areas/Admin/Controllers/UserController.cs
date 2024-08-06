@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
 using Model.DAO;
 using Model.EF;
 using Online_Shop.Common;
@@ -14,11 +17,13 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         // GET: Admin/User
-        public ActionResult Index(int page = 1, int pageSize = 1)
+        public ActionResult Index(string search, int page = 1, int pageSize = 1)
         {
             var dao = new UserDAO();
 
-            var list = dao.ListUsers(page, pageSize);
+            var list = dao.ListUsers(search, page, pageSize);
+
+            ViewBag.Search = search;
 
             return View(list);
         }
@@ -31,10 +36,29 @@ namespace Online_Shop.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(User user)
+        public ActionResult Create(User user, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null && file.ContentLength > 0)
+                {
+                    Account account = new Account(
+                        ConfigurationManager.AppSettings["Cloudinary.CloudName"],
+                        ConfigurationManager.AppSettings["Cloudinary.ApiKey"],
+                        ConfigurationManager.AppSettings["Cloudinary.ApiSecret"]);
+
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, file.InputStream)
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+
+                    user.Image = uploadResult.SecureUrl.ToString();
+                }
+
                 var dao = new UserDAO();
 
                 if (!dao.IsUserNameExist(user.UserName)) //kiểm tra tên đăng nhập đã tồn tại chưa
@@ -68,10 +92,29 @@ namespace Online_Shop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(User user, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null && file.ContentLength > 0)
+                {
+                    Account account = new Account(
+                        ConfigurationManager.AppSettings["Cloudinary.CloudName"],
+                        ConfigurationManager.AppSettings["Cloudinary.ApiKey"],
+                        ConfigurationManager.AppSettings["Cloudinary.ApiSecret"]);
+
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, file.InputStream)
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+
+                    user.Image = uploadResult.SecureUrl.ToString();
+                }
+
                 var dao = new UserDAO();
 
                 var passEncrypt = Encryptor.GetMd5Hash(user.Password);

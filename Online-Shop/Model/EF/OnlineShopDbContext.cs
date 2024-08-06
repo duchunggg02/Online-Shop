@@ -103,8 +103,12 @@ namespace Model.EF
                 .IsFixedLength();
 
             modelBuilder.Entity<User>()
-                .Property(e => e.Name)
+                .Property(e => e.LastName)
                 .IsFixedLength();
+
+            modelBuilder.Entity<User>()
+              .Property(e => e.FirstName)
+              .IsFixedLength();
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Phone)
@@ -125,6 +129,10 @@ namespace Model.EF
             modelBuilder.Entity<User>()
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+              .Property(e => e.Image)
+              .IsUnicode(false);
         }
     }
 }

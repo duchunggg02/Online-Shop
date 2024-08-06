@@ -18,9 +18,14 @@ namespace Model.DAO
             db = new OnlineShopDbContext();
         }
 
-        public IEnumerable<User> ListUsers(int page, int pageSize)
+        public IEnumerable<User> ListUsers(string search, int page, int pageSize)
         {
-            return db.Users.OrderBy(u => u.CreatedDate).ToPagedList(page, pageSize);
+            IQueryable<User> users = db.Users;
+            if (!String.IsNullOrEmpty(search))
+            {
+                users = users.Where(u => u.LastName.Contains(search) || u.FirstName.Contains(search));
+            }
+            return users.OrderBy(u => u.CreatedDate).ToPagedList(page, pageSize);
         }
 
         public int AddUser(User user)
@@ -73,10 +78,12 @@ namespace Model.DAO
             try
             {
                 var user = db.Users.Find(u.ID);
-                user.Name = u.Name;
+                user.LastName = u.LastName;
+                user.FirstName = u.FirstName;
                 user.Address = u.Address;
                 user.Phone = u.Phone;
                 user.Email = u.Email;
+                user.Image = u.Image;
                 //user.UpdatedBy = u.UpdatedBy;
                 user.UpdatedDate = DateTime.Now;
                 user.Status = u.Status;

@@ -15,11 +15,13 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class ProductController : BaseController
     {
         // GET: Admin/Product
-        public ActionResult Index(int page = 1, int pageSize = 10)
+        public ActionResult Index(string search, int page = 1, int pageSize = 1)
         {
             var dao = new ProductDAO();
 
-            var listProducts = dao.ListProducts(page, pageSize);
+            var listProducts = dao.ListProducts(search, page, pageSize);
+
+            ViewBag.Search = search;
 
             return View(listProducts);
         }
@@ -35,6 +37,7 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                //cloudinary
                 if (file != null && file.ContentLength > 0)
                 {
                     Account account = new Account(
@@ -80,6 +83,7 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                //cloudinary
                 if (file != null && file.ContentLength > 0)
                 {
                     Account account = new Account(

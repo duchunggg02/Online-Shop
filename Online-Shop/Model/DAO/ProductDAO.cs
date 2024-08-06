@@ -17,9 +17,14 @@ namespace Model.DAO
             db = new OnlineShopDbContext();
         }
 
-        public IEnumerable<Product> ListProducts(int page, int pageSize)
+        public IEnumerable<Product> ListProducts(string search, int page, int pageSize)
         {
-            return db.Products.OrderBy(p => p.Name).ToPagedList(page, pageSize);
+            IQueryable<Product> products = db.Products;
+            if (!String.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.Name.Contains(search) || p.Code.Contains(search));
+            }
+            return products.OrderBy(p => p.Name).ToPagedList(page, pageSize);
         }
 
         public int AddProduct(Product product)
@@ -74,6 +79,19 @@ namespace Model.DAO
                 return false;
             }
 
+        }
+
+        public IEnumerable<Product> SearchProduct(string search)
+        {
+            var products = from p in db.Products
+                           select p;
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.Name.Contains(search));
+            }
+
+            return products.ToList();
         }
     }
 }

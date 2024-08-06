@@ -13,7 +13,7 @@
 
         [Required]
         [StringLength(20)]
-        [Display(Name="Tên đăng nhập")]
+        [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
 
         [Required]
@@ -22,14 +22,18 @@
         public string Password { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Họ tên")]
-        public string Name { get; set; }
+        [Display(Name = "Họ")]
+        public string LastName { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Tên")]
+        public string FirstName { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
 
-        [StringLength(30)]
+        [StringLength(50)]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -49,5 +53,8 @@
 
         [Display(Name = "Trạng thái")]
         public bool Status { get; set; }
+
+        [StringLength(250)]
+        public string Image { get; set; }
     }
 }
