@@ -69,6 +69,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                     int id = dao.AddUser(user);
                     if (id > 0) //thêm thành công
                     {
+                        SetAlert("Thêm người dùng thành công", "success");
                         return RedirectToAction("Index", "User");
                     }
                     else
@@ -123,6 +124,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                 bool result = dao.UpdateUser(user);
                 if (result) //cập nhật thành công
                 {
+                    SetAlert("Sửa người dùng thành công", "success");
                     return RedirectToAction("Index", "User");
                 }
                 else

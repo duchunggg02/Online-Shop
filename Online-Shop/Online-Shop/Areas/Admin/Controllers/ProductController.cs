@@ -61,6 +61,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                 int id = dao.AddProduct(product);
                 if (id > 0) // thêm thành công
                 {
+                    SetAlert("Thêm sản phẩm thành công", "success");
                     return RedirectToAction("Index", "Product");
                 }
                 else
@@ -108,6 +109,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                 var result = dao.UpdateProduct(product);
                 if (result)
                 {
+                    SetAlert("Sửa sản phẩm thành công", "success");
                     return RedirectToAction("Index", "Product");
                 }
                 else
