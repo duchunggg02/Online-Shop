@@ -219,6 +219,8 @@
     <Content Include="Assets\Admin\img\undraw_profile_2.svg" />
     <Content Include="Assets\Admin\img\undraw_profile_3.svg" />
     <Content Include="Assets\Admin\img\undraw_rocket.svg" />
+    <Content Include="Assets\Admin\js\controllers\product.js" />
+    <Content Include="Assets\Admin\js\controllers\user.js" />
     <Content Include="Assets\Admin\js\demo\chart-area-demo.js" />
     <Content Include="Assets\Admin\js\demo\chart-bar-demo.js" />
     <Content Include="Assets\Admin\js\demo\chart-pie-demo.js" />

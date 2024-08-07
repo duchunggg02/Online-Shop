@@ -124,5 +124,15 @@ namespace Online_Shop.Areas.Admin.Controllers
             new ProductDAO().DeleteProduct(id);
             return RedirectToAction("Index", "Product");
         }
+
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var result = new ProductDAO().ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
+        }
     }
 }

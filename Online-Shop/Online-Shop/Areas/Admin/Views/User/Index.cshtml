@@ -10,6 +10,10 @@
     Danh sách người dùng
 }
 
+@section js {
+    <script src="/Assets/Admin/js/controllers/user.js"></script>
+}
+
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
         @using (Html.BeginForm("Index", "User", FormMethod.Get))
@@ -50,7 +54,9 @@
                             <td>@item.Phone</td>
                             <td>@item.Email</td>
                             <td>@item.Address</td>
-                            <td>@item.Status</td>
+                            <td>
+                                <a href="#" class="btn-active" data-id="@item.ID">@(item.Status ? "Vô hiệu hóa" : "Kích hoạt")</a>
+                            </td>
                             <td>
                                 <a class="btn btn-success" href="/Admin/User/Edit/@item.ID">Cập nhật</a>
                                 @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions

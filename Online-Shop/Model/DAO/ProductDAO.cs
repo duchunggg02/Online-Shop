@@ -93,5 +93,13 @@ namespace Model.DAO
 
             return products.ToList();
         }
+
+        public bool ChangeStatus(int id)
+        {
+            var product = db.Products.Find(id);
+            product.Status = !product.Status;
+            db.SaveChanges();
+            return product.Status;
+        }
     }
 }

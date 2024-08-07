@@ -29,7 +29,6 @@
         [Display(Name = "Tên")]
         public string FirstName { get; set; }
 
-        [StringLength(10)]
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
 

@@ -111,8 +111,8 @@ namespace Model.EF
               .IsFixedLength();
 
             modelBuilder.Entity<User>()
-                .Property(e => e.Phone)
-                .IsFixedLength();
+              .Property(e => e.Phone)
+              .IsFixedLength();
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Email)

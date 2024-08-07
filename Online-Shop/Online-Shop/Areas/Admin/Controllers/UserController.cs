@@ -17,7 +17,7 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         // GET: Admin/User
-        public ActionResult Index(string search, int page = 1, int pageSize = 1)
+        public ActionResult Index(string search, int page = 1, int pageSize = 10)
         {
             var dao = new UserDAO();
 
@@ -138,6 +138,16 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             new UserDAO().DeleteUser(id);
             return RedirectToAction("Index", "User");
+        }
+
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var result = new UserDAO().ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
         }
     }
 }
