@@ -28,6 +28,6 @@ namespace Model.EF
         [StringLength(50)]
         public string UpdatedBy { get; set; }
 
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace Model.DAO
                 product.PromotionPrice = p.PromotionPrice;
                 product.Quantity = p.Quantity;
                 product.Detail = p.Detail;
-                product.CategoryID = p.CategoryID;
+                product.ProductCategoryID = p.ProductCategoryID;
                 product.Status = p.Status;
                 db.SaveChanges();
                 return true;

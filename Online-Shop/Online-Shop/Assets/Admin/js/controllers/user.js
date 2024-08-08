@@ -1,15 +1,15 @@
 ﻿var user = {
-    init: function () {
-        user.changeStatusEvents()
+    init: function (url) {
+        user.changeStatusEvents(url)
     },
 
-    changeStatusEvents: function () {
+    changeStatusEvents: function (url) {
         $('.btn-active').off('click').on('click', function (e) {
             e.preventDefault()
             var btn = $(this)
             var id = btn.data('id')
             $.ajax({
-                url: "/Admin/User/ChangeStatus",
+                url: url,
                 data: { id: id },
                 dataType: "json",
                 type: "Post",
@@ -26,4 +26,4 @@
     }
 }
 
-user.init()
+user.init("/Admin/User/ChangeStatus")

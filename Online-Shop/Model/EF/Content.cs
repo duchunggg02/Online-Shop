@@ -35,7 +35,7 @@ namespace Model.EF
 
         public DateTime? UpdatedDate { get; set; }
 
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
 
         public int? ViewCount { get; set; }
 
