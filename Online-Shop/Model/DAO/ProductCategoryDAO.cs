@@ -49,5 +49,20 @@ namespace Model.DAO
             }
 
         }
+
+        public bool DeleteProductCategory(int id)
+        {
+            try
+            {
+                var productCategory = db.ProductCategories.Find(id);
+                db.ProductCategories.Remove(productCategory);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

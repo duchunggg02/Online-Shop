@@ -48,5 +48,20 @@ namespace Model.DAO
                 return false;
             }
         }
+
+        public bool DeleteCategory(int id)
+        {
+            try
+            {
+                var category = db.Categories.Find(id);
+                db.Categories.Remove(category);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

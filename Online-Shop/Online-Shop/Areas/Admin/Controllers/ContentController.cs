@@ -14,9 +14,15 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class ContentController : BaseController
     {
         // GET: Admin/Content
-        public ActionResult Index()
+        public ActionResult Index(string search, int page = 1, int pageSize = 10)
         {
-            return View();
+            var dao = new ContentDAO();
+
+            var list = dao.ListContents(search, page, pageSize);
+
+            ViewBag.Search = search;
+
+            return View(list);
         }
 
         [HttpGet]

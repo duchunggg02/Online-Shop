@@ -70,5 +70,12 @@ namespace Online_Shop.Areas.Admin.Controllers
             }
             return View("Edit");
         }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            new ProductCategoryDAO().DeleteProductCategory(id);
+            return RedirectToAction("Index");
+        }
     }
 }

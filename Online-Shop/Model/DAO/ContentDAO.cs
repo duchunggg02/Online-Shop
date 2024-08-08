@@ -1,4 +1,5 @@
 ﻿using Model.EF;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,16 @@ namespace Model.DAO
         public ContentDAO()
         {
             db = new OnlineShopDbContext();
+        }
+
+        public IEnumerable<Content> ListContents(string search, int page, int pageSize)
+        {
+            IQueryable<Content> contents = db.Contents;
+            if (!String.IsNullOrEmpty(search))
+            {
+                contents = contents.Where(c => c.Name.Contains(search));
+            }
+            return contents.OrderBy(c => c.Name).ToPagedList(page, pageSize);
         }
 
         public int AddContent(Content content)
