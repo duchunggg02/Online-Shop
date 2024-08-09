@@ -11,9 +11,12 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class ProductCategoryController : BaseController
     {
         // GET: Admin/ProductCategory
-        public ActionResult Index()
+        public ActionResult Index(string search, int page = 1, int pageSize = 10)
         {
-            return View();
+            var dao = new ProductCategoryDAO();
+            var list = dao.ListProductCategories(search, page, pageSize);
+            ViewBag.Search = search;
+            return View(list);
         }
 
         [HttpGet]
@@ -60,7 +63,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                 var result = dao.Update(productCategory);
                 if (result)
                 {
-                    SetAlert("Cập nhật danh mục sản phẩm thành công", "success");
+                    SetAlert("Sửa danh mục sản phẩm thành công", "success");
                     return RedirectToAction("Index");
                 }
                 else
@@ -76,6 +79,16 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             new ProductCategoryDAO().DeleteProductCategory(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var result = new ProductCategoryDAO().ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
         }
     }
 }

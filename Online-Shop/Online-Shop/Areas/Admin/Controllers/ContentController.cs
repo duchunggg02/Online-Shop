@@ -25,9 +25,16 @@ namespace Online_Shop.Areas.Admin.Controllers
             return View(list);
         }
 
+        public void SetViewBag(int? id = null)
+        {
+            var dao = new CategoryDAO();
+            ViewBag.CategoryID = new SelectList(dao.ListAll(), "ID", "Name", id);
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
+            SetViewBag();
             return View();
         }
 
@@ -68,8 +75,37 @@ namespace Online_Shop.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Thêm thất bại!!");
                 }
             }
-
+            SetViewBag();
             return View("Create");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var content = new ContentDAO().GetContentByID(id);
+            SetViewBag();
+            return View(content);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Content content)
+        {
+            if (ModelState.IsValid)
+            {
+                var dao = new ContentDAO();
+                bool result = dao.UpdateContent(content);
+                if (result)
+                {
+                    SetAlert("Sửa tin tức thành công", "success");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Cập nhật thất bại");
+                }
+            }
+            SetViewBag();
+            return View("Index");
         }
 
         [HttpDelete]
@@ -77,6 +113,16 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             new ContentDAO().DeleteContent(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var result = new ContentDAO().ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
         }
     }
 }

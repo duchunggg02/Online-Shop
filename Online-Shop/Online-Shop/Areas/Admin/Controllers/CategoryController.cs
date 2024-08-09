@@ -11,9 +11,15 @@ namespace Online_Shop.Areas.Admin.Controllers
     public class CategoryController : BaseController
     {
         // GET: Admin/Category
-        public ActionResult Index()
+        public ActionResult Index(string search, int page = 1, int pageSize = 10)
         {
-            return View();
+            var dao = new CategoryDAO();
+
+            var list = dao.ListCategories(search, page, pageSize);
+
+            ViewBag.Search = search;
+
+            return View(list);
         }
 
         [HttpGet]
@@ -76,6 +82,16 @@ namespace Online_Shop.Areas.Admin.Controllers
         {
             new CategoryDAO().DeleteCategory(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var result = new CategoryDAO().ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
         }
     }
 }

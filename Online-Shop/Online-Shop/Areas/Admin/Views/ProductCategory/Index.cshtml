@@ -1,4 +1,6 @@
-﻿
+﻿@model PagedList.IPagedList<Model.EF.ProductCategory>
+@using PagedList.Mvc;
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -7,3 +9,55 @@
 @section header {
     Danh sách danh mục sản phẩm
 }
+
+@section js {
+    <script src="~/Assets/Admin/js/controllers/productcategory.js"></script>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        @using (Html.BeginForm("Index", "ProductCategory", FormMethod.Get))
+        {
+            <div class="form-group mb-0">
+                <input type="text" name="search" placeholder="Type here..." value="@ViewBag.Search" />
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        }
+        <a class="btn btn-primary" href="@Url.Action("Create", "ProductCategory")">Thêm</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <a href="#" class="btn-active" data-id="@item.ID">@(item.Status ? "Vô hiệu hóa" : "Kích hoạt")</a>
+                            </td>
+                            <td>
+                                <a href="/Admin/ProductCategory/Edit/@item.ID" class="btn btn-success">Cập nhật</a>
+                                @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions
+                                    {
+                                        Confirm = "Bạn có chắc chắn muốn xóa?",
+                                        OnComplete = "$(#row_" + @item.ID + ").remove()",
+                                        OnSuccess = "location.reload();",
+                                        HttpMethod = "Delete"
+                                    }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @ViewBag.Search }))
+        </div>
+    </div>
+</div>

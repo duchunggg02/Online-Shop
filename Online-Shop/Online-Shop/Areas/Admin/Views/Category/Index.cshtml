@@ -1,5 +1,5 @@
-﻿@using PagedList.Mvc;
-@model PagedList.IPagedList<Model.EF.Category>
+﻿@model PagedList.IPagedList<Model.EF.Category>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -8,6 +8,10 @@
 
 @section header {
     Danh sách danh mục
+}
+
+@section js {
+    <script src="~/Assets/Admin/js/controllers/category.js"></script>
 }
 
 <div class="card shadow mb-4">
@@ -27,8 +31,6 @@
                 <thead>
                     <tr>
                         <th>Tên</th>
-                        <th>Mô tả</th>
-                        <th>Chi tiết</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
@@ -37,12 +39,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
-                                <img src="@item.Image" alt="@item.Name" width="50" />
-                            </td>
                             <td>@item.Name</td>
-                            <td>@item.Description</td>
-                            <td>@item.Detail</td>
                             <td>
                                 <a href="#" class="btn-active" data-id="@item.ID">@(item.Status ? "Vô hiệu hóa" : "Kích hoạt")</a>
                             </td>

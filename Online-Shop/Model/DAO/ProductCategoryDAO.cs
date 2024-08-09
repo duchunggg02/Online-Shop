@@ -1,7 +1,9 @@
 ﻿using Model.EF;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,16 @@ namespace Model.DAO
         public ProductCategoryDAO()
         {
             db = new OnlineShopDbContext();
+        }
+
+        public IEnumerable<ProductCategory> ListProductCategories(string search, int page, int pageSize)
+        {
+            IQueryable<ProductCategory> productCategories = db.ProductCategories;
+            if (!String.IsNullOrEmpty(search))
+            {
+                productCategories = productCategories.Where(p => p.Name.Contains(search));
+            }
+            return productCategories.OrderBy(p => p.Name).ToPagedList(page, pageSize);
         }
 
         public int AddProductCategory(ProductCategory productCategory)
@@ -63,6 +75,19 @@ namespace Model.DAO
             {
                 return false;
             }
+        }
+
+        public bool ChangeStatus(int id)
+        {
+            var productCategory = db.ProductCategories.Find(id);
+            productCategory.Status = !productCategory.Status;
+            db.SaveChanges();
+            return productCategory.Status;
+        }
+
+        public List<ProductCategory> ListAll()
+        {
+            return db.ProductCategories.Where(p => p.Status == true).ToList();
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +50,40 @@ namespace Model.DAO
             {
                 return false;
             }
+        }
+
+        public Content GetContentByID(int id)
+        {
+            return db.Contents.Find(id);
+        }
+
+        public bool UpdateContent(Content c)
+        {
+            try
+            {
+                var content = db.Contents.Find(c.ID);
+                content.UpdatedDate = DateTime.Now;
+                content.Name = c.Name;
+                content.Description = c.Description;
+                content.Image = c.Image;
+                content.CategoryID = c.CategoryID;
+                content.Detail = c.Detail;
+                content.Status = c.Status;
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeStatus(int id)
+        {
+            var content = db.Contents.Find(id);
+            content.Status = !content.Status;
+            db.SaveChanges();
+            return content.Status;
         }
     }
 }

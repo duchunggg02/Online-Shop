@@ -29,6 +29,7 @@ namespace Online_Shop.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            SetViewBag();
             return View();
         }
 
@@ -69,12 +70,14 @@ namespace Online_Shop.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Thêm thất bại!!");
                 }
             }
+            SetViewBag();
             return View("Create");
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            SetViewBag();
             var product = new ProductDAO().GetProductById(id);
             return View(product);
         }
@@ -117,6 +120,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Cập nhật thất bại!!");
                 }
             }
+            SetViewBag();
             return View("Edit");
         }
 
@@ -135,6 +139,12 @@ namespace Online_Shop.Areas.Admin.Controllers
             {
                 status = result
             });
+        }
+
+        public void SetViewBag(int? id = null)
+        {
+            var dao = new ProductCategoryDAO();
+            ViewBag.ProductCategoryID = new SelectList(dao.ListAll(), "ID", "Name", id);
         }
     }
 }

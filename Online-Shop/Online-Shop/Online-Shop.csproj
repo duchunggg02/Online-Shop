@@ -221,6 +221,9 @@
     <Content Include="Assets\Admin\img\undraw_profile_2.svg" />
     <Content Include="Assets\Admin\img\undraw_profile_3.svg" />
     <Content Include="Assets\Admin\img\undraw_rocket.svg" />
+    <Content Include="Assets\Admin\js\controllers\category.js" />
+    <Content Include="Assets\Admin\js\controllers\content.js" />
+    <Content Include="Assets\Admin\js\controllers\productcategory.js" />
     <Content Include="Assets\Admin\js\controllers\user.js" />
     <Content Include="Assets\Admin\js\demo\chart-area-demo.js" />
     <Content Include="Assets\Admin\js\demo\chart-bar-demo.js" />
@@ -2114,6 +2117,7 @@
     <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Content\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
