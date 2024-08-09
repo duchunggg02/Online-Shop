@@ -50,10 +50,10 @@
                                     {
                                         @Html.ValidationSummary(false, "", "Error")
                                         <div class="form-group">
-                                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @autofocus = "autofocus" })
+                                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @autofocus = "autofocus", placeholder = "Username" })
                                         </div>
                                         <div class="form-group">
-                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
                                         </div>
                                         <div class="form-group">
                                             <label>
