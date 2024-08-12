@@ -87,7 +87,7 @@ namespace Model.DAO
 
         public List<ProductCategory> ListAll()
         {
-            return db.ProductCategories.Where(p => p.Status == true).ToList();
+            return db.ProductCategories.Where(p => p.Status == true).OrderBy(p => p.DisplayOrder).ToList();
         }
     }
 }

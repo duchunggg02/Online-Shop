@@ -58,9 +58,9 @@ namespace Model.EF
                 .Property(e => e.TagID)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Footer>()
-                .Property(e => e.ID)
-                .IsUnicode(false);
+            //modelBuilder.Entity<Footer>()
+            //    .Property(e => e.ID)
+            //    .IsUnicode(false);
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Code)
