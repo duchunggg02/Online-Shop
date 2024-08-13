@@ -5,7 +5,7 @@
         <h3>Danh mục</h3>
         @foreach (var item in Model)
         {
-            <li><a href="#">@item.Name</a></li>
+            <li><a href="/Product/CategoryDetail/@item.ID">@item.Name</a></li>
         }
     </ul>
 </div>

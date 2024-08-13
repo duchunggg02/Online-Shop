@@ -27,6 +27,7 @@ namespace Model.EF
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Slide> Slides { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -101,5 +101,16 @@ namespace Model.DAO
             db.SaveChanges();
             return product.Status;
         }
+
+        public List<Product> ListNewProduct(int top)
+        {
+            return db.Products.OrderByDescending(p => p.CreatedDate).Take(top).ToList();
+        }
+
+        public List<Product> ListRelatedProduct(int id)
+        {
+            var product = db.Products.Find(id);
+            return db.Products.Where(p => p.ID != id && p.ProductCategoryID == product.ProductCategoryID).ToList();
+        }
     }
 }
