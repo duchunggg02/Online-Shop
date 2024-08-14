@@ -102,15 +102,37 @@ namespace Model.DAO
             return product.Status;
         }
 
+        /// <summary>
+        /// sản phẩm mới
+        /// </summary>
+        /// <param name="top"></param>
+        /// <returns></returns>
         public List<Product> ListNewProduct(int top)
         {
             return db.Products.OrderByDescending(p => p.CreatedDate).Take(top).ToList();
         }
 
+        /// <summary>
+        /// lấy sản phẩm liên quan
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public List<Product> ListRelatedProduct(int id)
         {
             var product = db.Products.Find(id);
             return db.Products.Where(p => p.ID != id && p.ProductCategoryID == product.ProductCategoryID).ToList();
+        }
+
+        /// <summary>
+        /// lấy sản phẩm theo category id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Product> ListProductByCateID(int id, ref int totalProduct, int page, int pageSize)
+        {
+            totalProduct = db.Products.Where(p => p.ProductCategoryID == id).Count();
+            var product = db.Products.Where(p => p.ProductCategoryID == id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return product;
         }
     }
 }

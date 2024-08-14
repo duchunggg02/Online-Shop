@@ -9,7 +9,10 @@
 @section slide {
     <div class="header_slide">
         <div class="header_bottom_left">
-            @{ Html.RenderAction("ProductCategory", "Product");}
+            <div class="categories">
+                <h3>DANH MỤC SẢN PHẨM</h3>
+                @{ Html.RenderAction("ProductCategory", "Product");}
+            </div>
         </div>
         <div class="header_bottom_right">
             <div class="slider">

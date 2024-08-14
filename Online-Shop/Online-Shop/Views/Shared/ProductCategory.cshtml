@@ -1,11 +1,10 @@
 ﻿@model List<Model.EF.ProductCategory>
 
-<div class="categories">
-    <ul>
-        <h3>Danh mục</h3>
-        @foreach (var item in Model)
-        {
-            <li><a href="/Product/CategoryDetail/@item.ID">@item.Name</a></li>
-        }
-    </ul>
-</div>
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <a href="/Product/Product/@item.ID">@item.Name</a>
+        </li>
+    }
+</ul>

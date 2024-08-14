@@ -1,0 +1,54 @@
+﻿@model List<Model.EF.Product>
+
+@{
+    var category = (Model.EF.ProductCategory)ViewBag.Category;
+    ViewBag.Title = category.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content">
+    <div class="content_top">
+        <div class="heading">
+            <h3>@category.Name</h3>
+        </div>
+        <div class="see">
+            <p><a href="#">Hiện tất cả</a></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var item in Model)
+        {
+            var url = "Product/ProductDetail/" + @item.ID;
+            <div class="grid_1_of_4 images_1_of_4">
+                <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
+                <h2>@item.Name</h2>
+                <div class="price-details">
+                    <div class="price-number">
+                        <p><span class="rupees">@item.Price</span></p>
+                    </div>
+                    <div class="add-cart">
+                        <h4><a href="#">Thêm vào giỏ</a></h4>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        }
+        @* Phân trang *@
+        @if (ViewBag.TotalPage > 1)
+        {
+            var pageDisplay = int.Parse(ViewBag.MaxPage);
+            int totalPage = int.Parse(ViewBag.TotalPage);
+            int currentPage = int.Parse(ViewBag.Page);
+
+            var startPage = Math.Max(1, currentPage - pageDisplay / 2);
+            var endPage = Math.Min(totalPage, currentPage + pageDisplay / 2);
+        }
+        else
+        {
+            <span>Không có sản phẩm</span>
+        }
+
+    </div>
+</div>
