@@ -203,14 +203,17 @@
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\LoginModel.cs" />
+    <Compile Include="Common\Cart.cs" />
     <Compile Include="Common\Encryptor.cs" />
     <Compile Include="Common\UserHelper.cs" />
     <Compile Include="Common\UserLogin.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1977,6 +1980,7 @@
     <Content Include="Assets\Client\js\bootstrap.esm.min.js" />
     <Content Include="Assets\Client\js\bootstrap.js" />
     <Content Include="Assets\Client\js\bootstrap.min.js" />
+    <Content Include="Assets\Client\js\controllers\cart.js" />
     <Content Include="Assets\Client\js\easing.js" />
     <Content Include="Assets\Client\js\easyResponsiveTabs.js" />
     <Content Include="Assets\Client\js\jquery-1.7.2.min.js" />
@@ -2260,11 +2264,12 @@
     <Content Include="Views\Shared\ProductCategory.cshtml" />
     <Content Include="Views\Product\Product.cshtml" />
     <Content Include="Views\Product\ProductDetail.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Shared\CartHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Client\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -1,9 +1,13 @@
 ﻿using Model.DAO;
+using Online_Shop.Models;
 using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Web;
 using System.Web.Mvc;
+using Online_Shop.Common;
 
 namespace Online_Shop.Controllers
 {
@@ -36,6 +40,20 @@ namespace Online_Shop.Controllers
         {
             var model = new FooterDAO().GetFooter();
             return PartialView(model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult CartHeader()
+        {
+            
+            var cartSession = Session[Cart.CartSession];
+            var list = new List<CartItem>();
+            if (cartSession != null)
+            {
+                list = (List<CartItem>)cartSession;
+            }
+          
+            return PartialView(list);
         }
     }
 }

@@ -9,7 +9,7 @@
     <link href="/Assets/Client/css/slider.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="/Assets/Client/js/jquery-1.7.2.min.js"></script>
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
     <script type="text/javascript" src="/Assets/Client/js/move-top.js"></script>
     <script type="text/javascript" src="/Assets/Client/js/easing.js"></script>
     <script type="text/javascript" src="/Assets/Client/js/startstop-slider.js"></script>
@@ -22,18 +22,9 @@
             </div>
             <div class="header_top">
                 <div class="logo">
-                    <a href="@Url.Action("Index", "Home")"><img src="/Assets/Client/images/logo.png" alt="" /></a>
+                    <a href="@Url.Action("Index", "Home")" rel="nofollow"><img src="/Assets/Client/images/logo.png" alt="logo" /></a>
                 </div>
-                <div class="cart">
-                    <p>
-                        Welcome to our Online Store! <span>Cart:</span><div id="dd" class="wrapper-dropdown-2">
-                            0 item(s) - $0.00
-                            <ul class="dropdown">
-                                <li>you have no items in your Shopping cart</li>
-                            </ul>
-                        </div>
-                    </p>
-                </div>
+                @{ Html.RenderAction("CartHeader", "Home");}
                 <script type="text/javascript">
                     function DropDown(el) {
                         this.dd = el;
@@ -89,5 +80,6 @@
         });
     </script>
     <a href="#" id="toTop"><span id="toTopHover"> </span></a>
+    @RenderSection("js", false);
 </body>
 </html>

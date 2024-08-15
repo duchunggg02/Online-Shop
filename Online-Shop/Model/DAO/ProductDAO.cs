@@ -131,7 +131,7 @@ namespace Model.DAO
         public List<Product> ListProductByCateID(int id, ref int totalProduct, int page, int pageSize)
         {
             totalProduct = db.Products.Where(p => p.ProductCategoryID == id).Count();
-            var product = db.Products.Where(p => p.ProductCategoryID == id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var product = db.Products.Where(p => p.ProductCategoryID == id).OrderByDescending(p => p.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return product;
         }
     }

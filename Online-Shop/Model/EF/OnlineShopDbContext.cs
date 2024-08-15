@@ -22,12 +22,13 @@ namespace Model.EF
         public virtual DbSet<Footer> Footers { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<MenuType> MenuTypes { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Slide> Slides { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Slide> Slides { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -59,9 +60,9 @@ namespace Model.EF
                 .Property(e => e.TagID)
                 .IsUnicode(false);
 
-            //modelBuilder.Entity<Footer>()
-            //    .Property(e => e.ID)
-            //    .IsUnicode(false);
+            modelBuilder.Entity<OrderDetail>()
+                .Property(e => e.Price)
+                .HasPrecision(18, 0);
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Code)
@@ -97,31 +98,31 @@ namespace Model.EF
 
             modelBuilder.Entity<User>()
                 .Property(e => e.UserName)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Password)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.LastName)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
-              .Property(e => e.FirstName)
-              .IsFixedLength();
+                .Property(e => e.FirstName)
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
-              .Property(e => e.Phone)
-              .IsFixedLength();
+                .Property(e => e.Phone)
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Email)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Address)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.UpdatedBy)
@@ -130,10 +131,6 @@ namespace Model.EF
             modelBuilder.Entity<User>()
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-              .Property(e => e.Image)
-              .IsUnicode(false);
         }
     }
 }
