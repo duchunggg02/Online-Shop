@@ -28,7 +28,9 @@ namespace Online_Shop.Controllers
         public ActionResult AddItem(int productId, int quantity)
         {
             var product = new ProductDAO().GetProductById(productId);
+
             var session = Session[Cart.CartSession];
+
             if (session != null)
             {
                 var list = (List<CartItem>)session;
@@ -80,6 +82,15 @@ namespace Online_Shop.Controllers
                     item.Quantity = jsonItem.Quantity;
                 }
             }
+            return Json(new
+            {
+                status = true
+            });
+        }
+
+        public JsonResult DeleteAll()
+        {
+            Session[Cart.CartSession] = null;
             return Json(new
             {
                 status = true

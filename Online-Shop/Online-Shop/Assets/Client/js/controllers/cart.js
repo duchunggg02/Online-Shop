@@ -33,6 +33,20 @@
                 }
             })
         })
+
+        $('#btn_Delete').off('click').on('click', function () {
+
+            $.ajax({
+                url: "/Cart/DeleteAll",
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Cart"
+                    }
+                }
+            })
+        })
     }
 }
 
