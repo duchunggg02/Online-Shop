@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Online_Shop.Controllers
 {
     public class CartController : Controller
     {
-       
+
         // GET: Cart
         public ActionResult Index()
         {
@@ -61,6 +62,28 @@ namespace Online_Shop.Controllers
                 Session[Cart.CartSession] = list;
             }
             return RedirectToAction("Index");
+        }
+
+        public JsonResult Update(string cartModel)
+        {
+            //chuyển json thành danh sách cart item
+            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItem>>(cartModel);
+
+            //lấy giỏ hàng từ session
+            var sessionCart = (List<CartItem>)Session[Cart.CartSession];
+
+            foreach (var item in sessionCart)
+            {
+                var jsonItem = jsonCart.SingleOrDefault(x => x.Product.ID == item.Product.ID);
+                if (jsonItem != null)
+                {
+                    item.Quantity = jsonItem.Quantity;
+                }
+            }
+            return Json(new
+            {
+                status = true
+            });
         }
     }
 }

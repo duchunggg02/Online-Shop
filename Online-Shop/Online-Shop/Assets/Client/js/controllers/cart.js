@@ -9,20 +9,29 @@
         })
 
         $('#btn_Update').off('click').on('click', function () {
-            var listProduct = $('.input_quantity');
+            var productQuantityInput = $('.input_quantity')
 
-            var cartList = [];
-            $.each(listProduct, function (i, item) {
+            var cartList = []
+            $.each(productQuantityInput, function (i, item) {
                 cartList.push({
                     Quantity: $(item).val(),
                     Product: {
                         ID: $(item).data('id')
                     }
                 })
-            }
+            })
 
-
-
+            $.ajax({
+                url: "/Cart/Update",
+                data: { cartModel: JSON.stringify(cartList) },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Cart"
+                    }
+                }
+            })
         })
     }
 }
