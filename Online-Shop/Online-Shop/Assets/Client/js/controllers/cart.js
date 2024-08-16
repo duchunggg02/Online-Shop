@@ -3,11 +3,14 @@
         cart.regEvents()
     },
     regEvents: function () {
+
+        //continue
         $('#btn_Continue').off('click').on('click', function () {
             window.location.href = "/"
 
         })
 
+        //update gio hang
         $('#btn_Update').off('click').on('click', function () {
             var productQuantityInput = $('.input_quantity')
 
@@ -34,6 +37,7 @@
             })
         })
 
+        //xoa gio hang
         $('#btn_Delete').off('click').on('click', function () {
 
             $.ajax({
@@ -47,6 +51,22 @@
                 }
             })
         })
+
+        //xoa san pham khoi gio hang
+        $('.btn_del').off('click').on('click', function () {
+            $.ajax({
+                data: { id: $(this).data('id') },
+                url: "/Cart/Delete",
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Cart"
+                    }
+                }
+            })
+        })
+
     }
 }
 

@@ -22,6 +22,7 @@
                         <td>Số lượng</td>
                         <td>Đơn giá</td>
                         <td>Thành tiền</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,7 @@
                             <td><input type="text" class="input_quantity" data-id="@item.Product.ID" value="@item.Quantity" /></td>
                             <td>@item.Product.Price</td>
                             <td>@(item.Product.Price * item.Quantity)</td>
+                            <td><a data-id="@item.Product.ID" class="btn_del" href="#">X</a></td>
                         </tr>
                     }
                 </tbody>

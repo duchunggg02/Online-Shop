@@ -96,5 +96,19 @@ namespace Online_Shop.Controllers
                 status = true
             });
         }
+
+        public JsonResult Delete(int id)
+        {
+            //lấy giỏ hàng từ session
+            var sessionCart = (List<CartItem>)Session[Cart.CartSession];
+
+            sessionCart.RemoveAll(x => x.Product.ID == id);
+            Session[Cart.CartSession] = sessionCart;
+
+            return Json(new
+            {
+                status = true
+            });
+        }
     }
 }
