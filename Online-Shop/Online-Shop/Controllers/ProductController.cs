@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Model.EF;
 
 namespace Online_Shop.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: ProductC
+        // GET: Product
         public ActionResult Index()
         {
             return View();
@@ -49,9 +50,15 @@ namespace Online_Shop.Controllers
         public ActionResult ProductDetail(int id)
         {
             var product = new ProductDAO().GetProductById(id);
+            UpdateViewCount(product);
             ViewBag.ProductCategory = new ProductCategoryDAO().GetProductCategoryByID(product.ProductCategoryID);
             ViewBag.RelatedProduct = new ProductDAO().ListRelatedProduct(id);
             return View(product);
+        }
+
+        public void UpdateViewCount(Product product)
+        {
+            new ProductDAO().ViewCountProduct(product);
         }
     }
 }

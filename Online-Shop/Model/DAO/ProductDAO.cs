@@ -30,6 +30,7 @@ namespace Model.DAO
         public int AddProduct(Product product)
         {
             product.CreatedDate = DateTime.Now;
+            product.ViewCount = 0;
             db.Products.Add(product);
             db.SaveChanges();
             return product.ID;
@@ -120,7 +121,7 @@ namespace Model.DAO
         public List<Product> ListRelatedProduct(int id)
         {
             var product = db.Products.Find(id);
-            return db.Products.Where(p => p.ID != id && p.ProductCategoryID == product.ProductCategoryID).ToList();
+            return db.Products.Where(p => p.ID != id && p.ProductCategoryID == product.ProductCategoryID).Take(4).ToList();
         }
 
         /// <summary>
@@ -133,6 +134,20 @@ namespace Model.DAO
             totalProduct = db.Products.Where(p => p.ProductCategoryID == id).Count();
             var product = db.Products.Where(p => p.ProductCategoryID == id).OrderByDescending(p => p.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return product;
+        }
+
+        public void ViewCountProduct(Product product)
+        {
+            try
+            {
+                var prod = db.Products.Find(product.ID);
+                prod.ViewCount += 1;
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
