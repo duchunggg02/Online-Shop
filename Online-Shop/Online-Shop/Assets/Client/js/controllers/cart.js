@@ -10,6 +10,11 @@
 
         })
 
+        //payment
+        $('#btn_Pay').off('click').on('click', function () {
+            window.location.href = "/Cart/Payment"
+        })
+
         //update gio hang
         $('#btn_Update').off('click').on('click', function () {
             var productQuantityInput = $('.input_quantity')
@@ -66,6 +71,7 @@
                 }
             })
         })
+
 
     }
 }
