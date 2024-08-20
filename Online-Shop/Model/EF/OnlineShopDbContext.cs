@@ -132,5 +132,6 @@ namespace Model.EF
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
         }
+
     }
 }

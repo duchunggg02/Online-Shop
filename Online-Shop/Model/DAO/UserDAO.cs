@@ -50,6 +50,11 @@ namespace Model.DAO
             return db.Users.Any(u => u.UserName == userName); //dừng ngay sau khi tìm thấy 1 kết quả
         }
 
+        public bool IsEmailExist(string email)
+        {
+            return db.Users.Any(u => u.Email == email);
+        }
+
         public bool Login(string userName, string passWord)
         {
             var result = db.Users.Count(x => x.UserName == userName && x.Password == passWord);
