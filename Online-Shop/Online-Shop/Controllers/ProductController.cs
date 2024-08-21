@@ -23,7 +23,7 @@ namespace Online_Shop.Controllers
             return PartialView(model);
         }
 
-        public ActionResult Product(int id, int page = 1, int pageSize = 1)
+        public ActionResult Product(int id, int page = 1, int pageSize = 5)
         {
             var productCategory = new ProductCategoryDAO().GetProductCategoryByID(id);
             ViewBag.Category = productCategory;
@@ -59,6 +59,17 @@ namespace Online_Shop.Controllers
         public void UpdateViewCount(Product product)
         {
             new ProductDAO().ViewCountProduct(product);
+        }
+
+        public JsonResult ListName(string keyword)
+        {
+            var listName = new ProductDAO().ListName(keyword);
+            return Json(
+                new
+                {
+                    data = listName,
+                    status = true
+                }, JsonRequestBehavior.AllowGet);
         }
     }
 }

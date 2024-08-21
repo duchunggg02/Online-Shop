@@ -149,5 +149,10 @@ namespace Model.DAO
 
             }
         }
+
+        public List<String> ListName(string keyword)
+        {
+            return db.Products.Where(p => p.Name.Contains(keyword)).Select(p => p.Name).ToList();
+        }
     }
 }

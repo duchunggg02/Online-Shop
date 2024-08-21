@@ -1983,6 +1983,7 @@
     <Content Include="Assets\Client\js\bootstrap.esm.min.js" />
     <Content Include="Assets\Client\js\bootstrap.js" />
     <Content Include="Assets\Client\js\bootstrap.min.js" />
+    <Content Include="Assets\Client\js\controllers\baseController.js" />
     <Content Include="Assets\Client\js\controllers\cart.js" />
     <Content Include="Assets\Client\js\easing.js" />
     <Content Include="Assets\Client\js\easyResponsiveTabs.js" />
