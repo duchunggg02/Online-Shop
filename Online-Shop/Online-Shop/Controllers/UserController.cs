@@ -98,12 +98,29 @@ namespace Online_Shop.Controllers
             {
                 var dao = new UserDAO();
                 var result = dao.Login(model.UserName, Encryptor.GetMd5Hash(model.Password));
-            }
-            else
-            {
-
+                if (result)
+                {
+                    var user = dao.GetUserByName(model.UserName);
+                    var userSession = new UserLogin();
+                    userSession.UserName = user.UserName;
+                    userSession.Id = user.ID;
+                    userSession.Name = user.FirstName;
+                    userSession.Image = user.Image;
+                    Session.Add("UserLogin", userSession);// thêm UserLogin vào session
+                    return Redirect("/");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "");
+                }
             }
             return View(model);
+        }
+
+        public ActionResult Logout()
+        {
+            Session["UserLogin"] = null;
+            return Redirect("/");
         }
     }
 }
