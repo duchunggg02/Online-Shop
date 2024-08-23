@@ -14,6 +14,8 @@ namespace Online_Shop.Models
         [Required]
         public string UserName { get; set; }
         [Display(Name = "Mật khẩu")]
+        [RegularExpression("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+        ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất 1 chữ hoa, 1 số và 1 ký tự đặc biệt")]
         [Required]
         public string Password { get; set; }
         [Display(Name = "Xác nhận mật khẩu")]

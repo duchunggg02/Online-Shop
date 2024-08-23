@@ -111,7 +111,7 @@ namespace Online_Shop.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "");
+                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng");
                 }
             }
             return View(model);
