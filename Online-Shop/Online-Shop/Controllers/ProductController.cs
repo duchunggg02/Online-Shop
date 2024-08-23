@@ -23,13 +23,36 @@ namespace Online_Shop.Controllers
             return PartialView(model);
         }
 
-        public ActionResult Product(int id, int page = 1, int pageSize = 5)
+        public ActionResult Product(int id, int page = 1, int pageSize = 1)
         {
             var productCategory = new ProductCategoryDAO().GetProductCategoryByID(id);
             ViewBag.Category = productCategory;
 
             int totalProduct = 0;
             var product = new ProductDAO().ListProductByCateID(id, ref totalProduct, page, pageSize);
+
+            ViewBag.TotalProduct = totalProduct;
+            ViewBag.Page = page;
+
+            int maxPage = 5;
+            int totalPage = (int)Math.Ceiling((double)(totalProduct / pageSize));
+
+            ViewBag.TotalPage = totalPage;
+            ViewBag.MaxPage = maxPage;
+            ViewBag.First = 1;
+            ViewBag.Last = totalPage;
+            ViewBag.Next = page + 1;
+            ViewBag.Prev = page - 1;
+
+            return View(product);
+        }
+
+        public ActionResult Search(string keyword, int page = 1, int pageSize = 1)
+        {
+            int totalProduct = 0;
+            var product = new ProductDAO().Search(keyword, ref totalProduct, page, pageSize);
+
+            ViewBag.Keyword = keyword;
 
             ViewBag.TotalProduct = totalProduct;
             ViewBag.Page = page;

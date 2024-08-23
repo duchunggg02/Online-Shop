@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using PagedList;
 using System.Threading.Tasks;
-
+using Model.ViewModel;
 namespace Model.DAO
 {
     public class ProductDAO
@@ -153,6 +153,35 @@ namespace Model.DAO
         public List<String> ListName(string keyword)
         {
             return db.Products.Where(p => p.Name.Contains(keyword)).Select(p => p.Name).ToList();
+        }
+
+        public List<ProductViewModel> Search(string keyword, ref int totalRecord, int pageIndex, int pageSize)
+        {
+            totalRecord = db.Products.Where(x => x.Name.Contains(keyword)).Count();
+            var model = (from p in db.Products
+                         join c in db.ProductCategories
+                         on p.ProductCategoryID equals c.ID
+                         where p.Name.Contains(keyword)
+                         select new
+                         {
+                             ID = p.ID,
+                             Name = p.Name,
+                             CateName = c.Name,
+                             Image = p.Image,
+                             Price = p.Price,
+                             PromotionPrice = p.PromotionPrice,
+                             CreatedDate = p.CreatedDate
+                         }).AsEnumerable().Select(x => new ProductViewModel()
+                         {
+                             ID = x.ID,
+                             Name = x.Name,
+                             CateName = x.Name,
+                             Image = x.Image,
+                             Price = x.Price,
+                             PromotionPrice = x.PromotionPrice,
+                             CreatedDate = x.CreatedDate
+                         });
+            return model.OrderByDescending(x => x.CreatedDate).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
     }
 }
