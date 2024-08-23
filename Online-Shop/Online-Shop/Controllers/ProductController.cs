@@ -23,7 +23,7 @@ namespace Online_Shop.Controllers
             return PartialView(model);
         }
 
-        public ActionResult Product(int id, int page = 1, int pageSize = 1)
+        public ActionResult Product(int id, int page = 1, int pageSize = 4)
         {
             var productCategory = new ProductCategoryDAO().GetProductCategoryByID(id);
             ViewBag.Category = productCategory;
@@ -47,7 +47,7 @@ namespace Online_Shop.Controllers
             return View(product);
         }
 
-        public ActionResult Search(string keyword, int page = 1, int pageSize = 1)
+        public ActionResult Search(string keyword, int page = 1, int pageSize = 4)
         {
             int totalProduct = 0;
             var product = new ProductDAO().Search(keyword, ref totalProduct, page, pageSize);
