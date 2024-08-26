@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Online_Shop.Controllers
 {
@@ -17,12 +18,28 @@ namespace Online_Shop.Controllers
         // GET: Cart
         public ActionResult Index()
         {
-            var cartSession = Session[Cart.CartSession];
-            var list = new List<CartItem>();
-            if (cartSession != null)
+            var userSession = (UserLogin)Session["UserLogin"];
+            var list = new List<CartItemSession>();
+            if (userSession != null)
             {
-                list = (List<CartItem>)cartSession;
+                var cartItems = new CartDAO().GetCartByUserId(userSession.Id);
+                var productDAO = new ProductDAO();
+
+                list = cartItems.Select(c => new CartItemSession
+                {
+                    Product = productDAO.GetProductById(c.ProductID),
+                    Quantity = c.Quantity
+                }).ToList();
             }
+            else
+            {
+                var cartSession = Session[CartSession.Session];
+                if (cartSession != null)
+                {
+                    list = (List<CartItemSession>)cartSession;
+                }
+            }
+
             return View(list);
         }
 
@@ -30,50 +47,61 @@ namespace Online_Shop.Controllers
         {
             var product = new ProductDAO().GetProductById(productId);
 
-            var session = Session[Cart.CartSession];
+            var userSession = (UserLogin)Session["UserLogin"];
 
-            if (session != null)
+            if (userSession == null) // chưa đăng nhập
             {
-                var list = (List<CartItem>)session;
-                if (list.Exists(c => c.Product.ID == productId))
+                // lưu giỏ hàng vào session
+                var session = Session[CartSession.Session];
+                if(session != null)
                 {
-                    foreach (var item in list)
+                    var list = (List<CartItemSession>)session;
+                    if (list.Exists(c => c.Product.ID == productId))
                     {
-                        if (item.Product.ID == productId)
+                        foreach (var item in list)
                         {
-                            item.Quantity += quantity;
+                            if (item.Product.ID == productId)
+                            {
+                                item.Quantity += quantity;
+                            }
                         }
+                    }
+                    else
+                    {
+                        var item = new CartItemSession();
+                        item.Product = product;
+                        item.Quantity = quantity;
+                        list.Add(item);
                     }
                 }
                 else
                 {
-                    var item = new CartItem();
+                    var item = new CartItemSession();
                     item.Product = product;
                     item.Quantity = quantity;
+                    var list = new List<CartItemSession>();
                     list.Add(item);
-                }
-            }
-            else
-            {
-                var item = new CartItem();
-                item.Product = product;
-                item.Quantity = quantity;
-                var list = new List<CartItem>();
-                list.Add(item);
 
-                //lưu vào session
-                Session[Cart.CartSession] = list;
+                    //lưu vào session
+                    Session[CartSession.Session] = list;
+                }
+            } 
+            else // đã đăng nhập
+            {
+                var cart = new CartDAO();
+                cart.AddItemToCart(userSession.Id, productId, quantity);
             }
+
             return RedirectToAction("Index");
         }
 
         public JsonResult Update(string cartModel)
         {
             //chuyển json thành danh sách cart item
-            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItem>>(cartModel);
+            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItemSession>>(cartModel);
 
             //lấy giỏ hàng từ session
-            var sessionCart = (List<CartItem>)Session[Cart.CartSession];
+            var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
 
             foreach (var item in sessionCart)
             {
@@ -91,7 +119,7 @@ namespace Online_Shop.Controllers
 
         public JsonResult DeleteAll()
         {
-            Session[Cart.CartSession] = null;
+            Session[CartSession.Session] = null;
             return Json(new
             {
                 status = true
@@ -101,10 +129,10 @@ namespace Online_Shop.Controllers
         public JsonResult Delete(int id)
         {
             //lấy giỏ hàng từ session
-            var sessionCart = (List<CartItem>)Session[Cart.CartSession];
+            var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
 
             sessionCart.RemoveAll(x => x.Product.ID == id);
-            Session[Cart.CartSession] = sessionCart;
+            Session[CartSession.Session] = sessionCart;
 
             return Json(new
             {
@@ -115,11 +143,11 @@ namespace Online_Shop.Controllers
         [HttpGet]
         public ActionResult Payment()
         {
-            var cartSession = Session[Cart.CartSession];
-            var list = new List<CartItem>();
+            var cartSession = Session[CartSession.Session];
+            var list = new List<CartItemSession>();
             if (cartSession != null)
             {
-                list = (List<CartItem>)cartSession;
+                list = (List<CartItemSession>)cartSession;
             }
             return View(list);
         }
@@ -127,14 +155,24 @@ namespace Online_Shop.Controllers
         [HttpPost]
         public ActionResult Payment(int status)
         {
+            //kiem tra dang nhap
+            var userSession = (UserLogin)Session["UserLogin"];
+            if (userSession == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             var order = new Order();
             order.CreatedDate = DateTime.Now;
             order.Status = status;
+            order.CustomerID = userSession.Id;
 
             try
             {
+                var cartDAO = new CartDAO();
+
                 var id = new OrderDAO().Insert(order);
-                var cart = (List<CartItem>)Session[Cart.CartSession];
+                var cart = (List<CartItemSession>)Session[CartSession.Session];
                 var detail = new OrderDetailDAO();
                 foreach (var item in cart)
                 {
@@ -145,6 +183,8 @@ namespace Online_Shop.Controllers
                     orderDetail.Price = item.Product.Price;
                     detail.Insert(orderDetail);
                 }
+
+                cartDAO.ClearCart(userSession.Id);
             }
             catch (Exception ex)
             {

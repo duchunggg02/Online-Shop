@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Online_Shop.Common
 {
-    public static class Cart
+    public static class CartSession
     {
-        public static string CartSession = "CartSession";
+        public static string Session = "CartSession";
     }
 }

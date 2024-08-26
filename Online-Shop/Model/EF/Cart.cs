@@ -6,14 +6,20 @@ namespace Model.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Contact")]
-    public partial class Contact
+    [Table("Cart")]
+    public partial class Cart
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
-        [Column(TypeName = "ntext")]
-        public string Content { get; set; }
+        public int? UserID { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
 
         public bool Status { get; set; }
+
+        public int Quantity { get; set; }
+
+        public int ProductID { get; set; }
     }
 }

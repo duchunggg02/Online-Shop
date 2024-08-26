@@ -45,12 +45,11 @@ namespace Online_Shop.Controllers
         [ChildActionOnly]
         public ActionResult CartHeader()
         {
-            
-            var cartSession = Session[Cart.CartSession];
-            var list = new List<CartItem>();
+            var cartSession = Session[CartSession.Session];
+            var list = new List<CartItemSession>();
             if (cartSession != null)
             {
-                list = (List<CartItem>)cartSession;
+                list = (List<CartItemSession>)cartSession;
             }
           
             return PartialView(list);

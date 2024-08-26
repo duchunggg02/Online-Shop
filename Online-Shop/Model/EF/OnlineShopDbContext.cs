@@ -13,6 +13,7 @@ namespace Model.EF
         }
 
         public virtual DbSet<About> Abouts { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Config> Configs { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
@@ -132,6 +133,5 @@ namespace Model.EF
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
         }
-
     }
 }
