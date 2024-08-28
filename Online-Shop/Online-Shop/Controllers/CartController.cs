@@ -1,5 +1,4 @@
-﻿using Model.Common;
-using Model.DAO;
+﻿using Model.DAO;
 using Model.EF;
 using Online_Shop.Common;
 using Online_Shop.Models;
@@ -19,7 +18,9 @@ namespace Online_Shop.Controllers
         public ActionResult Index()
         {
             var userSession = (UserLogin)Session["UserLogin"];
-            var list = new List<CartItemSession>();
+            //var list = new List<CartItemSession>();
+
+            var cartView = new List<CartViewModel>();
 
             var cartDetailDAO = new CartDetailDAO();
             var productDAO = new ProductDAO();
@@ -32,9 +33,13 @@ namespace Online_Shop.Controllers
                 if (cart != null)
                 {
                     var cartDetail = cartDetailDAO.GetCartItems(cart.ID);
-                    list = cartDetail.Select(c => new CartItemSession
+
+                    cartView = cartDetail.Select(c => new CartViewModel
                     {
-                        Product = productDAO.GetProductById(c.ProductID),
+                        ProductID = c.ProductID,
+                        ProductName = productDAO.GetProductById(c.ProductID).Name,
+                        ProductImage = productDAO.GetProductById(c.ProductID).Image,
+                        ProductPrice = productDAO.GetProductById(c.ProductID).Price,
                         Quantity = c.Quantity
                     }).ToList();
                 }
@@ -43,14 +48,21 @@ namespace Online_Shop.Controllers
             else
             {
                 //chưa đăng nhập, lấy giỏ hàng từ session
-                var cartSession = Session[CartSession.Session];
+                var cartSession = Session[CartSession.Session] as List<CartItemSession>;
                 if (cartSession != null)
                 {
-                    list = (List<CartItemSession>)cartSession;
+                    cartView = cartSession.Select(c => new CartViewModel
+                    {
+                        ProductID = c.Product.ID,
+                        ProductName = c.Product.Name,
+                        ProductImage = c.Product.Image,
+                        ProductPrice = c.Product.Price,
+                        Quantity = c.Quantity
+                    }).ToList();
                 }
             }
 
-            return View(list);
+            return View(cartView);
         }
 
         public ActionResult AddItem(int productId, int quantity)

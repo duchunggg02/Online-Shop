@@ -59,7 +59,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\CartItem.cs" />
     <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CartDetailDAO.cs" />
     <Compile Include="DAO\CategoryDAO.cs" />

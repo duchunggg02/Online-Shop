@@ -1,5 +1,4 @@
-﻿using Model.Common;
-using Model.EF;
+﻿using Model.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
