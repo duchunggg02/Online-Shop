@@ -18,37 +18,26 @@ namespace Model.DAO
             db = new OnlineShopDbContext();
         }
 
-        public void AddItemToCart(int userId, int productId, int quantity)
+        //khởi tại giỏ hàng
+        public Cart CreateCart(int userId)
         {
-            var cart = db.Carts.FirstOrDefault(c => c.UserID == userId && c.ProductID == productId);
-            if (cart != null)
+            var cart = new Cart
             {
-                cart.Quantity += quantity;
-            }
-            else
-            {
-                cart = new Cart();
-                cart.UserID = userId;
-                cart.ProductID = productId;
-                cart.Quantity = quantity;
-                db.Carts.Add(cart);
-            }
+                UserID = userId,
+                CreatedDate = DateTime.Now,
+                Status = true
+            };
+            db.Carts.Add(cart);
             db.SaveChanges();
+            return cart;
         }
 
-        public List<CartItem> GetCartByUserId(long userId)
+        public Cart GetCartByUserId(int userId)
         {
-            return db.Carts
-                .Where(c => c.UserID == userId)
-                .Select(c => new CartItem
-                {
-                    ProductID = c.ProductID,
-                    Quantity = c.Quantity
-                })
-                .ToList();
+            return db.Carts.FirstOrDefault(c => c.UserID == userId);
         }
 
-        public void ClearCart(long userId)
+        public void ClearCart(int userId)
         {
             var cartItems = db.Carts.Where(c => c.UserID == userId);
             db.Carts.RemoveRange(cartItems);

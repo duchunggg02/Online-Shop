@@ -1,4 +1,5 @@
-﻿using Model.DAO;
+﻿using Model.Common;
+using Model.DAO;
 using Model.EF;
 using Online_Shop.Common;
 using Online_Shop.Models;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Online_Shop.Controllers
 {
@@ -20,19 +20,29 @@ namespace Online_Shop.Controllers
         {
             var userSession = (UserLogin)Session["UserLogin"];
             var list = new List<CartItemSession>();
+
+            var cartDetailDAO = new CartDetailDAO();
+            var productDAO = new ProductDAO();
+
             if (userSession != null)
             {
-                var cartItems = new CartDAO().GetCartByUserId(userSession.Id);
-                var productDAO = new ProductDAO();
+                //đã đăng nhập, lấy giỏ hàng từ database
+                var cart = new CartDAO().GetCartByUserId(userSession.Id);
 
-                list = cartItems.Select(c => new CartItemSession
+                if (cart != null)
                 {
-                    Product = productDAO.GetProductById(c.ProductID),
-                    Quantity = c.Quantity
-                }).ToList();
+                    var cartDetail = cartDetailDAO.GetCartItems(cart.ID);
+                    list = cartDetail.Select(c => new CartItemSession
+                    {
+                        Product = productDAO.GetProductById(c.ProductID),
+                        Quantity = c.Quantity
+                    }).ToList();
+                }
+
             }
             else
             {
+                //chưa đăng nhập, lấy giỏ hàng từ session
                 var cartSession = Session[CartSession.Session];
                 if (cartSession != null)
                 {
@@ -47,49 +57,55 @@ namespace Online_Shop.Controllers
         {
             var product = new ProductDAO().GetProductById(productId);
 
+            if (product == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var userSession = (UserLogin)Session["UserLogin"];
 
             if (userSession == null) // chưa đăng nhập
             {
                 // lưu giỏ hàng vào session
-                var session = Session[CartSession.Session];
-                if(session != null)
+                var cartItems = Session[CartSession.Session] as List<CartItemSession>;
+                if (cartItems != null)
                 {
-                    var list = (List<CartItemSession>)session;
-                    if (list.Exists(c => c.Product.ID == productId))
+                    var existingItem = cartItems.FirstOrDefault(c => c.Product.ID == productId);
+                    if (existingItem != null)
                     {
-                        foreach (var item in list)
-                        {
-                            if (item.Product.ID == productId)
-                            {
-                                item.Quantity += quantity;
-                            }
-                        }
+                        existingItem.Quantity += quantity;
                     }
                     else
                     {
-                        var item = new CartItemSession();
-                        item.Product = product;
-                        item.Quantity = quantity;
-                        list.Add(item);
+                        cartItems.Add(new CartItemSession
+                        {
+                            Product = product,
+                            Quantity = quantity
+                        });
                     }
                 }
                 else
                 {
-                    var item = new CartItemSession();
-                    item.Product = product;
-                    item.Quantity = quantity;
-                    var list = new List<CartItemSession>();
-                    list.Add(item);
-
-                    //lưu vào session
-                    Session[CartSession.Session] = list;
+                    cartItems = new List<CartItemSession>
+                    {
+                        new CartItemSession
+                        {
+                            Product = product,
+                            Quantity = quantity
+                        }
+                    };
                 }
-            } 
+                Session[CartSession.Session] = cartItems;
+            }
             else // đã đăng nhập
             {
-                var cart = new CartDAO();
-                cart.AddItemToCart(userSession.Id, productId, quantity);
+                var cart = new CartDAO().GetCartByUserId(userSession.Id);
+                if (cart == null)
+                {
+                    cart = new CartDAO().CreateCart(userSession.Id);
+                }
+
+                new CartDetailDAO().AddItem(cart.ID, productId, quantity);
             }
 
             return RedirectToAction("Index");

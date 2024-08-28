@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Common\CartItem.cs" />
     <Compile Include="DAO\CartDAO.cs" />
+    <Compile Include="DAO\CartDetailDAO.cs" />
     <Compile Include="DAO\CategoryDAO.cs" />
     <Compile Include="DAO\ContactDAO.cs" />
     <Compile Include="DAO\ContentDAO.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="DAO\UserDAO.cs" />
     <Compile Include="EF\About.cs" />
     <Compile Include="EF\Cart.cs" />
+    <Compile Include="EF\CartDetail.cs" />
     <Compile Include="EF\Category.cs" />
     <Compile Include="EF\Config.cs" />
     <Compile Include="EF\Contact.cs" />

@@ -6,16 +6,15 @@ namespace Model.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Cart")]
-    public partial class Cart
+    [Table("CartDetail")]
+    public partial class CartDetail
     {
         public int ID { get; set; }
 
-        public int UserID { get; set; }
+        public int? CartID { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public int ProductID { get; set; }
 
-        public bool Status { get; set; }
-
+        public int Quantity { get; set; }
     }
 }

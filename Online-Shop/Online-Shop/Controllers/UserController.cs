@@ -107,6 +107,31 @@ namespace Online_Shop.Controllers
                     userSession.Name = user.FirstName;
                     userSession.Image = user.Image;
                     Session.Add("UserLogin", userSession);// thêm UserLogin vào session
+
+                    //gộp giỏ hàng trong session vào giỏ hàng trong database
+                    var cartSession = Session[CartSession.Session] as List<CartItemSession>;
+
+                    if (cartSession != null && cartSession.Any())
+                    {
+                        var cartDao = new CartDAO();
+                        var cartDetailDao = new CartDetailDAO();
+                        var cart = cartDao.GetCartByUserId(userSession.Id);
+
+                        if(cart == null)
+                        {
+                            cart = cartDao.CreateCart(userSession.Id);
+                        }
+
+                        foreach(var item in cartSession)
+                        {
+                            cartDetailDao.AddItem(cart.ID, item.Product.ID, item.Quantity);
+                        }
+
+
+                        //xóa giỏ hàng trong session sau khi gộp
+                        Session[CartSession.Session] = null;
+                    }
+
                     return Redirect("/");
                 }
                 else
