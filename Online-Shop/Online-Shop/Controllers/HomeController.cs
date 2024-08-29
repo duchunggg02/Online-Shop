@@ -74,7 +74,7 @@ namespace Online_Shop.Controllers
                     var cartDetails = cartDetailDAO.GetCartItems(cart.ID);
                     cartItems = cartDetails.Select(c => new CartViewModel
                     {
-                        ProductID = c.ProductID,
+                        ID = c.ProductID,
                         ProductName = productDAO.GetProductById(c.ProductID).Name,
                         ProductImage = productDAO.GetProductById(c.ProductID).Image,
                         ProductPrice = productDAO.GetProductById(c.ProductID).Price,
@@ -89,7 +89,7 @@ namespace Online_Shop.Controllers
                 {
                     cartItems = cartSession.Select(c => new CartViewModel
                     {
-                        ProductID = c.Product.ID,
+                        ID = c.Product.ID,
                         ProductName = c.Product.Name,
                         ProductImage = c.Product.Image,
                         ProductPrice = c.Product.Price,

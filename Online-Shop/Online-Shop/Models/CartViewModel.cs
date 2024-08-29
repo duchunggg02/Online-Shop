@@ -7,7 +7,7 @@ namespace Online_Shop.Models
 {
     public class CartViewModel
     {
-        public int ProductID { get; set; }
+        public int ID { get; set; }
         public string ProductName { get; set; }
         public string ProductImage { get; set; }
         public decimal ProductPrice { get; set; }
