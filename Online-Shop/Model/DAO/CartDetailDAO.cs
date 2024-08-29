@@ -55,11 +55,21 @@ namespace Model.DAO
             if (cartDetail != null)
             {
                 db.CartDetails.Remove(cartDetail);
+
                 db.SaveChanges();
+
+                //kiểm tra nếu không còn sản phẩm nào trong giỏ hàng thì xóa luôn giỏ hàng
+                var remainingCartDetails = db.CartDetails.Where(x => x.CartID == cartId).Count();
+                if (remainingCartDetails == 0)
+                {
+                    var cart = db.Carts.Where(x => x.ID == cartId);
+                    db.Carts.RemoveRange(cart);
+                    db.SaveChanges();
+                }
             }
         }
 
-        public void ClearCart(int cartId)
+        public void ClearCartDetail(int cartId)
         {
             var cartDetails = db.CartDetails.Where(cd => cd.CartID == cartId);
             db.CartDetails.RemoveRange(cartDetails);

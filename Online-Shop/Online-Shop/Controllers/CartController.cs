@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -170,7 +171,24 @@ namespace Online_Shop.Controllers
 
         public JsonResult DeleteAll()
         {
-            Session[CartSession.Session] = null;
+            var userSession = (UserLogin)Session["UserLogin"];
+            var cartDao = new CartDAO();
+            var cartDetailDao = new CartDetailDAO();
+
+            if (userSession != null)
+            {
+                var cart = cartDao.GetCartByUserId(userSession.Id);
+                if (cart != null)
+                {
+                    cartDetailDao.ClearCartDetail(cart.ID);
+                    cartDao.ClearCart(userSession.Id);
+                }
+            }
+            else
+            {
+                Session[CartSession.Session] = null;
+            }
+
             return Json(new
             {
                 status = true
@@ -179,11 +197,28 @@ namespace Online_Shop.Controllers
 
         public JsonResult Delete(int id)
         {
-            //lấy giỏ hàng từ session
-            var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
+            var userSession = (UserLogin)Session["UserLogin"];
+            var cartDao = new CartDAO();
+            var cartDetailDao = new CartDetailDAO();
 
-            sessionCart.RemoveAll(x => x.Product.ID == id);
-            Session[CartSession.Session] = sessionCart;
+            if (userSession != null)
+            {
+                var cart = cartDao.GetCartByUserId(userSession.Id);
+                if (cart != null)
+                {
+                    cartDetailDao.DeleteItem(cart.ID, id);
+                }
+            }
+            else
+            {
+                //lấy giỏ hàng từ session
+                var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
+                if (sessionCart != null)
+                {
+                    sessionCart.RemoveAll(x => x.Product.ID == id);
+                    Session[CartSession.Session] = sessionCart;
+                }
+            }
 
             return Json(new
             {

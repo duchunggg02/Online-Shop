@@ -17,7 +17,7 @@ namespace Model.DAO
             db = new OnlineShopDbContext();
         }
 
-        //khởi tại giỏ hàng
+        //khởi tạo giỏ hàng
         public Cart CreateCart(int userId)
         {
             var cart = new Cart
