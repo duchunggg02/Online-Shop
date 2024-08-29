@@ -23,9 +23,7 @@
             $.each(productQuantityInput, function (i, item) {
                 cartList.push({
                     Quantity: $(item).val(),
-                    Product: {
-                        ID: $(item).data('id')
-                    }
+                    ID: $(item).data('id')
                 })
             })
 

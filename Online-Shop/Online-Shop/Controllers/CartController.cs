@@ -4,6 +4,7 @@ using Online_Shop.Common;
 using Online_Shop.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -125,20 +126,42 @@ namespace Online_Shop.Controllers
 
         public JsonResult Update(string cartModel)
         {
+            var userSession = (UserLogin)Session["UserLogin"];
+            var cartDao = new CartDAO();
+            var cartDetailDao = new CartDetailDAO();
+
             //chuyển json thành danh sách cart item
-            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItemSession>>(cartModel);
+            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartViewModel>>(cartModel);
 
-            //lấy giỏ hàng từ session
-            var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
-
-            foreach (var item in sessionCart)
+            if (userSession != null)
             {
-                var jsonItem = jsonCart.SingleOrDefault(x => x.Product.ID == item.Product.ID);
-                if (jsonItem != null)
+                var cart = cartDao.GetCartByUserId(userSession.Id);
+                if (cart != null)
                 {
-                    item.Quantity = jsonItem.Quantity;
+                    foreach (var item in jsonCart)
+                    {
+                        cartDetailDao.UpdateItem(cart.ID, item.ID, item.Quantity);
+                    }
                 }
             }
+            else
+            {
+                //lấy giỏ hàng từ session
+                var sessionCart = (List<CartItemSession>)Session[CartSession.Session];
+                if (sessionCart != null)
+                {
+                    foreach (var item in sessionCart)
+                    {
+                        var jsonItem = jsonCart.SingleOrDefault(x => x.ID == item.Product.ID);
+                        if (jsonItem != null)
+                        {
+                            item.Quantity = jsonItem.Quantity;
+                        }
+                    }
+                    Session[CartSession.Session] = sessionCart;
+                }
+            }
+
             return Json(new
             {
                 status = true

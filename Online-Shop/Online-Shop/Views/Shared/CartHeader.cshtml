@@ -15,7 +15,7 @@
                     foreach (var item in Model)
                     {
                         <li>
-                            @item.ProductName - @item.Quantity x @item.ProductPrice = @item.TotalPrice
+                            <img src="@item.ProductImage" width="30" /> - @item.ProductName - @item.Quantity x @item.ProductPrice = @item.TotalPrice
                         </li>
                     }
                 }
