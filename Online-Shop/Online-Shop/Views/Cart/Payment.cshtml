@@ -23,13 +23,13 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Product.ID</td>
-                        <td>@item.Product.Name</td>
-                        <td><img src="@item.Product.Image" width="100" alt="@item.Product.Name" /></td>
-                        <td><input type="text" class="input_quantity" data-id="@item.Product.ID" value="@item.Quantity" /></td>
-                        <td>@item.Product.Price</td>
-                        <td>@(item.Product.Price * item.Quantity)</td>
-                        <td><a data-id="@item.Product.ID" class="btn_del" href="#">X</a></td>
+                        <td>@item.ID</td>
+                        <td>@item.ProductName</td>
+                        <td><img src="@item.ProductImage" width="100" alt="@item.ProductName" /></td>
+                        <td><input type="text" class="input_quantity" data-id="@item.ID" value="@item.Quantity" /></td>
+                        <td>@item.ProductPrice</td>
+                        <td>@(item.ProductPrice * item.Quantity)</td>
+                        <td><a data-id="@item.ID" class="btn_del" href="#">X</a></td>
                     </tr>
                 }
             </tbody>

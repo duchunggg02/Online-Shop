@@ -229,24 +229,39 @@ namespace Online_Shop.Controllers
         [HttpGet]
         public ActionResult Payment()
         {
-            var cartSession = Session[CartSession.Session];
-            var list = new List<CartItemSession>();
-            if (cartSession != null)
+            var userSession = (UserLogin)Session["UserLogin"];
+            var cartDao = new CartDAO();
+            var cartDetailDao = new CartDetailDAO();
+
+            var cartView = new List<CartViewModel>();
+            var productDAO = new ProductDAO();
+
+            if (userSession == null)
             {
-                list = (List<CartItemSession>)cartSession;
+                return RedirectToAction("Login", "User");
             }
-            return View(list);
+
+            var cart = cartDao.GetCartByUserId(userSession.Id);
+            if (cart != null)
+            {
+                var cartDetail = cartDetailDao.GetCartItems(cart.ID);
+                cartView = cartDetail.Select(c => new CartViewModel
+                {
+                    ID = c.ProductID,
+                    ProductName = productDAO.GetProductById(c.ProductID).Name,
+                    ProductImage = productDAO.GetProductById(c.ProductID).Image,
+                    ProductPrice = productDAO.GetProductById(c.ProductID).Price,
+                    Quantity = c.Quantity
+                }).ToList();
+            }
+
+            return View(cartView);
         }
 
         [HttpPost]
         public ActionResult Payment(int status)
         {
-            //kiem tra dang nhap
             var userSession = (UserLogin)Session["UserLogin"];
-            if (userSession == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
 
             var order = new Order();
             order.CreatedDate = DateTime.Now;
@@ -256,21 +271,30 @@ namespace Online_Shop.Controllers
             try
             {
                 var cartDAO = new CartDAO();
+                var cartDetailDao = new CartDetailDAO();
 
-                var id = new OrderDAO().Insert(order);
-                var cart = (List<CartItemSession>)Session[CartSession.Session];
-                var detail = new OrderDetailDAO();
-                foreach (var item in cart)
+                var orderId = new OrderDAO().Insert(order);
+
+                var cart = cartDAO.GetCartByUserId(userSession.Id);
+
+                if (cart != null)
                 {
-                    var orderDetail = new OrderDetail();
-                    orderDetail.OrderID = id;
-                    orderDetail.ProductID = item.Product.ID;
-                    orderDetail.Quantity = item.Quantity;
-                    orderDetail.Price = item.Product.Price;
-                    detail.Insert(orderDetail);
+                    var cartDetail = cartDetailDao.GetCartItems(cart.ID);
+
+                    foreach (var item in cartDetail)
+                    {
+                        var orderDetail = new OrderDetail();
+                        orderDetail.OrderID = orderId;
+                        orderDetail.ProductID = item.ProductID;
+                        orderDetail.Quantity = item.Quantity;
+
+                        new OrderDetailDAO().Insert(orderDetail);
+                    }
                 }
 
+                cartDetailDao.ClearCartDetail(cart.ID);
                 cartDAO.ClearCart(userSession.Id);
+                
             }
             catch (Exception ex)
             {
