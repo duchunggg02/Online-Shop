@@ -13,33 +13,37 @@
     <div class="section group">
         @if (Model.Count() > 0)
         {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Mã SP</td>
-                        <td>Tên SP</td>
-                        <td>Ảnh SP</td>
-                        <td>Số lượng</td>
-                        <td>Đơn giá</td>
-                        <td>Thành tiền</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <form id="cartForm" method="get" action="@Url.Action("Payment", "Cart")">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>@item.ID</td>
-                            <td>@item.ProductName</td>
-                            <td><img src="@item.ProductImage" width="100" alt="@item.ProductName" /></td>
-                            <td><input type="number" min="1" class="input_quantity" data-id="@item.ID" value="@item.Quantity" /></td>
-                            <td>@item.ProductPrice</td>
-                            <td>@(item.ProductPrice * item.Quantity)</td>
-                            <td><a data-id="@item.ID" class="btn_del" href="#">X</a></td>
+                            <td></td>
+                            <td>Mã SP</td>
+                            <td>Tên SP</td>
+                            <td>Ảnh SP</td>
+                            <td>Số lượng</td>
+                            <td>Đơn giá</td>
+                            <td>Thành tiền</td>
+                            <td></td>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name="selectedProducts" value="@item.ID" /></td>
+                                <td>@item.ID</td>
+                                <td>@item.ProductName</td>
+                                <td><img src="@item.ProductImage" width="100" alt="@item.ProductName" /></td>
+                                <td><input type="number" min="1" class="input_quantity" data-id="@item.ID" value="@item.Quantity" /></td>
+                                <td>@item.ProductPrice</td>
+                                <td>@(item.ProductPrice * item.Quantity)</td>
+                                <td><a data-id="@item.ID" class="btn_del" href="#">X</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
 
             var totalAmount = Model.Sum(item => item.ProductPrice * item.Quantity);
 
@@ -50,7 +54,7 @@
             <button id="btn_Continue">Tiếp tục mua hàng</button>
             <button id="btn_Update">Cập nhật giỏ hàng</button>
             <button id="btn_Delete">Xóa giỏ hàng</button>
-            <button id="btn_Pay">Thanh toán</button>
+            <button id="btn_Pay" type="submit">Thanh toán</button>
 
         }
         else

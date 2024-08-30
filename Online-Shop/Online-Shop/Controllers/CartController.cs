@@ -227,7 +227,7 @@ namespace Online_Shop.Controllers
         }
 
         [HttpGet]
-        public ActionResult Payment()
+        public ActionResult Payment(List<int> selectedProducts)
         {
             var userSession = (UserLogin)Session["UserLogin"];
             var cartDao = new CartDAO();
@@ -241,18 +241,23 @@ namespace Online_Shop.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var cart = cartDao.GetCartByUserId(userSession.Id);
-            if (cart != null)
+            if (selectedProducts != null)
             {
-                var cartDetail = cartDetailDao.GetCartItems(cart.ID);
-                cartView = cartDetail.Select(c => new CartViewModel
+                var cart = cartDao.GetCartByUserId(userSession.Id);
+                if (cart != null)
                 {
-                    ID = c.ProductID,
-                    ProductName = productDAO.GetProductById(c.ProductID).Name,
-                    ProductImage = productDAO.GetProductById(c.ProductID).Image,
-                    ProductPrice = productDAO.GetProductById(c.ProductID).Price,
-                    Quantity = c.Quantity
-                }).ToList();
+                    var cartDetail = cartDetailDao.GetCartItems(cart.ID)
+                        .Where(c => selectedProducts.Contains(c.ProductID)).ToList();
+
+                    cartView = cartDetail.Select(c => new CartViewModel
+                    {
+                        ID = c.ProductID,
+                        ProductName = productDAO.GetProductById(c.ProductID).Name,
+                        ProductImage = productDAO.GetProductById(c.ProductID).Image,
+                        ProductPrice = productDAO.GetProductById(c.ProductID).Price,
+                        Quantity = c.Quantity
+                    }).ToList();
+                }
             }
 
             return View(cartView);
@@ -294,7 +299,7 @@ namespace Online_Shop.Controllers
 
                 cartDetailDao.ClearCartDetail(cart.ID);
                 cartDAO.ClearCart(userSession.Id);
-                
+
             }
             catch (Exception ex)
             {
