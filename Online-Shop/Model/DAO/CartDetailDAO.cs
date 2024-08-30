@@ -59,12 +59,15 @@ namespace Model.DAO
                 db.SaveChanges();
 
                 //kiểm tra nếu không còn sản phẩm nào trong giỏ hàng thì xóa luôn giỏ hàng
-                var remainingCartDetails = db.CartDetails.Where(x => x.CartID == cartId).Count();
+                var remainingCartDetails = db.CartDetails.Count(x => x.CartID == cartId);
                 if (remainingCartDetails == 0)
                 {
-                    var cart = db.Carts.Where(x => x.ID == cartId);
-                    db.Carts.RemoveRange(cart);
-                    db.SaveChanges();
+                    var cart = db.Carts.SingleOrDefault(x => x.ID == cartId);
+                    if (cart != null)
+                    {
+                        db.Carts.Remove(cart);
+                        db.SaveChanges();
+                    }
                 }
             }
         }
