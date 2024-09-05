@@ -30,7 +30,7 @@
         {
             foreach (var item in Model)
             {
-                var url = "/Product/ProductDetail/" + @item.ID;
+                var url = Url.Action("ProductDetail", "Product", new { productSlug = item.Slug });
                 <div class="grid_1_of_4 images_1_of_4">
                     <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
                     <h2>@item.Name</h2>

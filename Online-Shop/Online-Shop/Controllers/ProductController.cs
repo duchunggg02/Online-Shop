@@ -72,12 +72,13 @@ namespace Online_Shop.Controllers
             return View(product);
         }
 
-        public ActionResult ProductDetail(int id)
+        public ActionResult ProductDetail(string productSlug)
         {
-            var product = new ProductDAO().GetProductById(id);
+            //var product = new ProductDAO().GetProductById(id);
+            var product = new ProductDAO().GetProductBySlug(productSlug);
             UpdateViewCount(product);
             ViewBag.ProductCategory = new ProductCategoryDAO().GetProductCategoryByID(product.ProductCategoryID);
-            ViewBag.RelatedProduct = new ProductDAO().ListRelatedProduct(id);
+            ViewBag.RelatedProduct = new ProductDAO().ListRelatedProduct(product.ID);
             return View(product);
         }
 

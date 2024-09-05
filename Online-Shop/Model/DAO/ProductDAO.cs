@@ -67,6 +67,11 @@ namespace Model.DAO
             return db.Products.Find(id);
         }
 
+        public Product GetProductBySlug(string productSlug)
+        {
+            return db.Products.FirstOrDefault(p => p.Slug.Contains(productSlug));
+        }
+
         public bool DeleteProduct(int id)
         {
             try

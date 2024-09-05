@@ -47,5 +47,8 @@ namespace Model.EF
         public bool Status { get; set; }
 
         public int? ViewCount { get; set; }
+
+        [StringLength(250)]
+        public string Slug { get; set; }
     }
 }
