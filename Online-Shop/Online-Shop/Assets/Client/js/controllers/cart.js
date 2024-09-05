@@ -12,7 +12,7 @@
 
         //payment
         $('#btn_Pay').off('click').on('click', function () {
-            window.location.href = "/Cart/Payment"
+            window.location.href = "/thanh-toan"
         })
 
         //update gio hang

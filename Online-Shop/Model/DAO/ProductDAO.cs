@@ -6,6 +6,7 @@ using System.Text;
 using PagedList;
 using System.Threading.Tasks;
 using Model.ViewModel;
+using System.Data.SqlClient;
 namespace Model.DAO
 {
     public class ProductDAO
@@ -129,11 +130,32 @@ namespace Model.DAO
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<Product> ListProductByCateID(int id, ref int totalProduct, int page, int pageSize)
+        public List<Product> ListProductByCateID(int id, ref int totalProduct, int page, int pageSize, string sort)
         {
-            totalProduct = db.Products.Where(p => p.ProductCategoryID == id).Count();
-            var product = db.Products.Where(p => p.ProductCategoryID == id).OrderByDescending(p => p.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            return product;
+            var query = db.Products.Where(p => p.ProductCategoryID == id);
+
+            switch (sort)
+            {
+                case "price_asc":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                case "name_asc":
+                    query = query.OrderBy(p => p.Name);
+                    break;
+                case "name_desc":
+                    query = query.OrderByDescending(p => p.Name);
+                    break;
+                default:
+                    query = query.OrderBy(p => p.CreatedDate);
+                    break;
+            }
+
+            totalProduct = query.Count();
+
+            return query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public void ViewCountProduct(Product product)

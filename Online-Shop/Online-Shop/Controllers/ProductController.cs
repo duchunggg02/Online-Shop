@@ -23,13 +23,13 @@ namespace Online_Shop.Controllers
             return PartialView(model);
         }
 
-        public ActionResult Product(int id, int page = 1, int pageSize = 4)
+        public ActionResult Product(int id, int page = 1, int pageSize = 4, string sort = "")
         {
             var productCategory = new ProductCategoryDAO().GetProductCategoryByID(id);
             ViewBag.Category = productCategory;
 
             int totalProduct = 0;
-            var product = new ProductDAO().ListProductByCateID(id, ref totalProduct, page, pageSize);
+            var product = new ProductDAO().ListProductByCateID(id, ref totalProduct, page, pageSize, sort);
 
             ViewBag.TotalProduct = totalProduct;
             ViewBag.Page = page;
@@ -43,6 +43,8 @@ namespace Online_Shop.Controllers
             ViewBag.Last = totalPage;
             ViewBag.Next = page + 1;
             ViewBag.Prev = page - 1;
+
+            ViewBag.Sort = sort;
 
             return View(product);
         }

@@ -13,7 +13,7 @@
     <div class="section group">
         @if (Model.Count() > 0)
         {
-            <form id="cartForm" method="get" action="@Url.Action("Payment", "Cart")">
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -43,7 +43,7 @@
                         }
                     </tbody>
                 </table>
-            </form>
+         
 
             var totalAmount = Model.Sum(item => item.ProductPrice * item.Quantity);
 
@@ -54,7 +54,7 @@
             <button id="btn_Continue">Tiếp tục mua hàng</button>
             <button id="btn_Update">Cập nhật giỏ hàng</button>
             <button id="btn_Delete">Xóa giỏ hàng</button>
-            <button id="btn_Pay" type="submit">Thanh toán</button>
+            <button id="btn_Pay">Thanh toán</button>
 
         }
         else
