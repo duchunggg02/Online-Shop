@@ -9,35 +9,35 @@
     [Table("User")]
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            Orders = new HashSet<Order>();
+        }
+
         public int ID { get; set; }
 
         [Required]
         [StringLength(20)]
-        [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
 
         [Required]
         [StringLength(32)]
-        [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Họ")]
         public string LastName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Tên")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Số điện thoại")]
+        [StringLength(10)]
         public string Phone { get; set; }
 
         [StringLength(50)]
-        [EmailAddress]
         public string Email { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Địa chỉ")]
         public string Address { get; set; }
 
         [StringLength(50)]
@@ -50,10 +50,12 @@
 
         public DateTime? UpdatedDate { get; set; }
 
-        [Display(Name = "Trạng thái")]
         public bool Status { get; set; }
 
         [StringLength(250)]
         public string Image { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

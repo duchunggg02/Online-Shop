@@ -22,5 +22,12 @@ namespace Model.DAO
             db.SaveChanges();
             return order.ID;
         }
+
+        // lấy danh sách đơn hàng của user
+        public List<Order> ListOrder(int userId) 
+        {
+            return db.Orders.Where(o => o.CustomerID == userId).OrderByDescending(o => o.CreatedDate).ToList();
+        }
+
     }
 }

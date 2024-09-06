@@ -1,0 +1,32 @@
+﻿@model List<Model.EF.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Đơn hàng của bạn</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tên khách hàng</th>
+            <th>Trạng thái</th>
+            <th>Chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.CreatedDate</td>
+                <td>@item.User.FirstName</td>
+                <td>@item.Status</td>
+                <td>@Html.ActionLink("Xem chi tiết", "OrderDetail", new { orderId = item.ID })</td>
+            </tr>
+        }
+    </tbody>
+</table>

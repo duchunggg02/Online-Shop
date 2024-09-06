@@ -16,5 +16,10 @@ namespace Model.EF
         public int? CustomerID { get; set; }
 
         public int? Status { get; set; }
+
+        [StringLength(100)]
+        public string PaymentMethod { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

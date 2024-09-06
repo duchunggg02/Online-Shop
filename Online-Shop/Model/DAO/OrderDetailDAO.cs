@@ -29,5 +29,10 @@ namespace Model.DAO
                 return false;
             }
         }
+
+        public List<OrderDetail> GetOrderDetail(int orderId)
+        {
+            return db.OrderDetails.Where(o => o.OrderID == orderId).ToList();
+        }
     }
 }

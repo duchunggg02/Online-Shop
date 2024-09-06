@@ -86,6 +86,11 @@ namespace Model.EF
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.OrderDetails)
+                .WithRequired(e => e.Product)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ProductCategory>()
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
@@ -133,6 +138,11 @@ namespace Model.EF
             modelBuilder.Entity<User>()
                 .Property(e => e.CreatedBy)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Orders)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.CustomerID);
         }
     }
 }

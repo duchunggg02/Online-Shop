@@ -9,18 +9,16 @@ namespace Model.EF
     [Table("OrderDetail")]
     public partial class OrderDetail
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ID { get; set; }
+
         public int ProductID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderID { get; set; }
 
         public int? Quantity { get; set; }
 
         public decimal? Price { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }
