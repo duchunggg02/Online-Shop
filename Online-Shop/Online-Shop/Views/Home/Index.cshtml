@@ -58,7 +58,8 @@
         @foreach (var item in newProduct)
         {
             <div class="grid_1_of_4 images_1_of_4">
-                <a href="/Product/ProductDetail/@item.ID"><img src="@item.Image" alt="@item.Name" /></a>
+                @{ var url = Url.Action("ProductDetail", "Product", new { productSlug = item.Slug });}
+                <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
                 <h2>@item.Name</h2>
                 <div class="price-details">
                     <div class="price-number">

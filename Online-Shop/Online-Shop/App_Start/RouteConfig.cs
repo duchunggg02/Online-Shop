@@ -56,11 +56,20 @@ namespace Online_Shop
             );
 
             routes.MapRoute(
+           name: "Category",
+           url: "danh-muc/{categorySlug}",
+           defaults: new { controller = "Product", action = "Product", id = UrlParameter.Optional },
+           namespaces: new[] { "Online_Shop.Controllers" }
+           );
+
+            routes.MapRoute(
             name: "Product",
             url: "{productSlug}",
             defaults: new { controller = "Product", action = "ProductDetail", id = UrlParameter.Optional },
             namespaces: new[] { "Online_Shop.Controllers" }
             );
+
+           
 
             routes.MapRoute(
             name: "Default",

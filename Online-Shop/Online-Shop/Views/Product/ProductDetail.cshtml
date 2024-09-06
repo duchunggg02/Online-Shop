@@ -33,7 +33,8 @@
 <div class="content">
     <div class="content_top">
         <div class="back-links">
-            <p><a href="/">Trang chủ</a> >>>> <a href="/Product/CategoryDetail/@category.ID">@category.Name</a></p>
+            @{ var url = Url.Action("Product", "Product", new { categorySlug = category.Slug });}
+            <p><a href="/">Trang chủ</a> >>>> <a href="@url">@category.Name</a></p>
         </div>
         <div class="clear"></div>
     </div>
@@ -112,7 +113,7 @@
                             </ul>
                         </div>
                         <div class="button"><span><a href="/Cart/AddItem?productId=@Model.ID&quantity=1">Thêm vào giỏ</a></span></div>
-                  
+
                         <div class="clear"></div>
                     </div>
                     <div class="wish-list">
@@ -197,7 +198,7 @@
                 <div class="clear"></div>
             </div>
 
-            
+
             <div class="section group">
                 @foreach (var item in relatedProduct)
                 {

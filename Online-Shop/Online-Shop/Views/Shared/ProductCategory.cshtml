@@ -4,7 +4,8 @@
     @foreach (var item in Model)
     {
         <li>
-            <a href="/Product/Product/@item.ID">@item.Name</a>
+            @{ var url = Url.Action("Product", "Product", new { categorySlug = item.Slug });}
+            <a href="@url">@item.Name</a>
         </li>
     }
 </ul>

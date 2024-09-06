@@ -42,6 +42,11 @@ namespace Model.DAO
             return db.ProductCategories.Find(id);
         }
 
+        public ProductCategory GetProductCategoryBySlug(string categorySlug)
+        {
+            return db.ProductCategories.FirstOrDefault(c => c.Slug.Contains(categorySlug));
+        }
+
         public bool Update(ProductCategory p)
         {
             try

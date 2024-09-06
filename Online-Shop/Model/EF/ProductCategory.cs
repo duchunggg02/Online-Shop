@@ -29,5 +29,8 @@ namespace Model.EF
         public string UpdatedBy { get; set; }
 
         public bool Status { get; set; }
+
+        [StringLength(250)]
+        public string Slug { get; set; }
     }
 }

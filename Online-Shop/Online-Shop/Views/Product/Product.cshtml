@@ -33,7 +33,7 @@
                 var url = Url.Action("ProductDetail", "Product", new { productSlug = item.Slug });
                 <div class="grid_1_of_4 images_1_of_4">
                     <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
-                    <h2>@item.Name</h2>
+                    <h2><a href="@url">@item.Name</a></h2>
                     <div class="price-details">
                         <div class="price-number">
                             <p><span class="rupees">@item.Price</span></p>
