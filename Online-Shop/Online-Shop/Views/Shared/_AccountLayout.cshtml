@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row py-3">
+        <div class="col-3">
+            <h5>TRANG TÀI KHOẢN</h5>
+            <ul class="ps-0">
+                <li><a class="text-decoration-none" href="/User/Account">Thông tin tài khoản</a></li>
+                <li><a class="text-decoration-none" href="/Order/Index">Đơn hàng</a></li>
+                <li><a class="text-decoration-none" href="/User/ChangePassword">Đổi mật khẩu</a></li>
+                <li><a class="text-decoration-none" href="@Url.Action("Logout", "User")">Đăng xuất</a></li>
+            </ul>
+        </div>
+        <div class="col-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+

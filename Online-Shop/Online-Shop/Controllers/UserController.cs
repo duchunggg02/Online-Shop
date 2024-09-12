@@ -104,8 +104,10 @@ namespace Online_Shop.Controllers
                     var userSession = new UserLogin();
                     userSession.UserName = user.UserName;
                     userSession.Id = user.ID;
-                    userSession.Name = user.FirstName;
+                    userSession.FirstName = user.FirstName;
+                    userSession.LastName = user.LastName;
                     userSession.Image = user.Image;
+                    userSession.Email = user.Email;
                     Session.Add("UserLogin", userSession);// thêm UserLogin vào session
 
                     //gộp giỏ hàng trong session vào giỏ hàng trong database
@@ -117,12 +119,12 @@ namespace Online_Shop.Controllers
                         var cartDetailDao = new CartDetailDAO();
                         var cart = cartDao.GetCartByUserId(userSession.Id);
 
-                        if(cart == null)
+                        if (cart == null)
                         {
                             cart = cartDao.CreateCart(userSession.Id);
                         }
 
-                        foreach(var item in cartSession)
+                        foreach (var item in cartSession)
                         {
                             cartDetailDao.AddItem(cart.ID, item.Product.ID, item.Quantity);
                         }
@@ -131,6 +133,14 @@ namespace Online_Shop.Controllers
                         //xóa giỏ hàng trong session sau khi gộp
                         Session[CartSession.Session] = null;
                     }
+
+                    if (TempData["ReturnUrl"] != null)
+                    {
+                        string returnUrl = TempData["ReturnUrl"].ToString();
+                        TempData.Remove("ReturnUrl");
+                        return Redirect(returnUrl);
+                    }
+
 
                     return Redirect("/");
                 }
@@ -146,6 +156,64 @@ namespace Online_Shop.Controllers
         {
             Session["UserLogin"] = null;
             return Redirect("/");
+        }
+
+        public ActionResult Account()
+        {
+            var userSession = (UserLogin)Session["UserLogin"];
+
+            if (userSession == null)
+            {
+                TempData["ReturnUrl"] = Url.Action("Account", "User");
+                return RedirectToAction("Login", "User");
+            }
+
+            return View(userSession);
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePassModel model)
+        {
+            var userSession = (UserLogin)Session["UserLogin"];
+
+            if (ModelState.IsValid)
+            {
+                var userDao = new UserDAO();
+                var user = userDao.GetUserByID(userSession.Id);
+                var oldPass = Encryptor.GetMd5Hash(model.OldPassword);
+
+                if (oldPass != user.Password)
+                {
+                    ModelState.AddModelError("", "Mật khẩu cũ không đúng!");
+                    return View(model);
+                }
+                if (model.NewPassword != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Xác nhận mật khẩu không khớp!");
+                    return View(model);
+                }
+
+                user.Password = Encryptor.GetMd5Hash(model.NewPassword);
+
+                var result = userDao.UpdateUser(user);
+
+                if (result)
+                {
+                    TempData["Success"] = "Đổi mật khẩu thành công!";
+                    return RedirectToAction("ChangePassword", "User");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Có lỗi xảy ra!");
+                }
+            }
+            return View(model);
         }
     }
 }

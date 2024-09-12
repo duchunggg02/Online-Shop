@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Tài khoản";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+@{
+    var userSession = (Online_Shop.Common.UserLogin)Session["UserLogin"];
+}
+
+<h5>THÔNG TIN TÀI KHOẢN</h5>
+
+<p><strong>Họ tên:</strong> @userSession.LastName @userSession.FirstName</p>
+<p><strong>Email:</strong> @userSession.Email</p>

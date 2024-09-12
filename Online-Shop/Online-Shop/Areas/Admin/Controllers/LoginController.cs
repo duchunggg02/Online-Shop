@@ -29,7 +29,7 @@ namespace Online_Shop.Areas.Admin.Controllers
                     var userSession = new UserLogin();
                     userSession.UserName = user.UserName;
                     userSession.Id = user.ID;
-                    userSession.Name = user.FirstName;
+                    userSession.FirstName = user.FirstName;
                     userSession.Image = user.Image;
                     Session.Add("UserLogin", userSession);// thêm UserLogin vào session
                     return RedirectToAction("Index", "Home");
