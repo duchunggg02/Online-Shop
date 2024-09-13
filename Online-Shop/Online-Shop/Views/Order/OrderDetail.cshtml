@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
+<h5>CHI TIẾT ĐƠN HÀNG @Model.First().OrderID</h5>
 
 <table class="table">
     <thead>
@@ -22,7 +23,7 @@
                 <td>@item.Product.Name</td>
                 <td>@item.Quantity</td>
                 <td>@item.Price</td>
-           
+
             </tr>
         }
     </tbody>

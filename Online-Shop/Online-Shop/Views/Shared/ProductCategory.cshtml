@@ -1,11 +1,11 @@
 ﻿@model List<Model.EF.ProductCategory>
 
-<ul>
+<ul class="dropdown-menu">
     @foreach (var item in Model)
     {
         <li>
             @{ var url = Url.Action("Product", "Product", new { categorySlug = item.Slug });}
-            <a href="@url">@item.Name</a>
+            <a class="dropdown-item" href="@url">@item.Name</a>
         </li>
     }
 </ul>

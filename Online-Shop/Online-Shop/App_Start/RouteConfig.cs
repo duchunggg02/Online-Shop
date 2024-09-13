@@ -49,6 +49,13 @@ namespace Online_Shop
             );
 
             routes.MapRoute(
+            name: "Account",
+            url: "tai-khoan",
+            defaults: new { controller = "User", action = "Account", id = UrlParameter.Optional },
+            namespaces: new[] { "Online_Shop.Controllers" }
+            );
+
+            routes.MapRoute(
             name: "Payment",
             url: "thanh-toan",
             defaults: new { controller = "Cart", action = "Payment", id = UrlParameter.Optional },
@@ -56,15 +63,36 @@ namespace Online_Shop
             );
 
             routes.MapRoute(
-           name: "Category",
-           url: "danh-muc/{categorySlug}",
-           defaults: new { controller = "Product", action = "Product", id = UrlParameter.Optional },
+           name: "ChangePassword",
+           url: "thay-doi-mat-khau",
+           defaults: new { controller = "User", action = "ChangePassword", id = UrlParameter.Optional },
            namespaces: new[] { "Online_Shop.Controllers" }
            );
 
             routes.MapRoute(
+              name: "Order",
+              url: "don-hang",
+              defaults: new { controller = "Order", action = "Index", id = UrlParameter.Optional },
+              namespaces: new[] { "Online_Shop.Controllers" }
+              );
+
+            routes.MapRoute(
+           name: "Logout",
+           url: "dang-xuat",
+           defaults: new { controller = "User", action = "Logout", id = UrlParameter.Optional },
+           namespaces: new[] { "Online_Shop.Controllers" }
+           );
+
+            routes.MapRoute(
+            name: "Category",
+            url: "danh-muc/{categorySlug}",
+            defaults: new { controller = "Product", action = "Product", id = UrlParameter.Optional },
+            namespaces: new[] { "Online_Shop.Controllers" }
+            );
+
+            routes.MapRoute(
             name: "Product",
-            url: "{productSlug}",
+            url: "san-pham/{productSlug}",
             defaults: new { controller = "Product", action = "ProductDetail", id = UrlParameter.Optional },
             namespaces: new[] { "Online_Shop.Controllers" }
             );

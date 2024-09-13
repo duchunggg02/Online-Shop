@@ -35,12 +35,12 @@ namespace Online_Shop.Controllers
         }
 
 
-        [ChildActionOnly]
-        public ActionResult Footer()
-        {
-            var model = new FooterDAO().GetFooter();
-            return PartialView(model);
-        }
+        //[ChildActionOnly]
+        //public ActionResult Footer()
+        //{
+        //    var model = new FooterDAO().GetFooter();
+        //    return PartialView(model);
+        //}
 
         //[ChildActionOnly]
         //public ActionResult CartHeader()

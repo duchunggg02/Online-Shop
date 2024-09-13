@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-    <link href="/Assets/Client/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="/Assets/Client/css/slider.css" rel="stylesheet" type="text/css" media="all" />
+    @*<link href="/Assets/Client/css/slider.css" rel="stylesheet" type="text/css" media="all" />*@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" href="/Assets/Client/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    @*<link href="/Assets/Client/css/style.css" rel="stylesheet" type="text/css" media="all" />*@
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
@@ -20,74 +21,177 @@
     <script type="text/javascript" src="/Assets/Client/js/startstop-slider.js"></script>
 </head>
 <body>
-    <div class="wrap">
-        <div class="header">
-            <div class="headertop_desc">
-                @{ Html.RenderAction("TopMenu", "Home");}
-            </div>
-            <div class="header_top">
-                <div class="logo">
-                    <a href="@Url.Action("Index", "Home")" rel="nofollow"><img src="/Assets/Client/images/logo.png" alt="logo" /></a>
+    <section class="header">
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-2">
+                    <a href="/">
+                        <img src="" class="img-fluid" alt="logo">
+                    </a>
                 </div>
-                @{ Html.RenderAction("CartHeader", "Home");}
-                <script type="text/javascript">
-                    function DropDown(el) {
-                        this.dd = el;
-                        this.initEvents();
-                    }
-                    DropDown.prototype = {
-                        initEvents: function () {
-                            var obj = this;
-
-                            obj.dd.on('click', function (event) {
-                                $(this).toggleClass('active');
-                                event.stopPropagation();
-                            });
-                        }
-                    }
-
-                    $(function () {
-
-                        var dd = new DropDown($('#dd'));
-
-                        $(document).click(function () {
-                            // all dropdowns
-                            $('.wrapper-dropdown-2').removeClass('active');
-                        });
-
-                    });
-
-                </script>
-                <div class="clear"></div>
-            </div>
-            <div class="header_bottom">
-                @{Html.RenderAction("MainMenu", "Home");}
-                <div class="search_box">
-                    <form action="/Product/Search" method="get">
-                        <input type="text" name="keyword" id="searchTxt" placeholder="Bạn tìm gì...">
-                        <input type="submit" value="">
-                    </form>
+                <div class="col-md-4">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nhập từ khóa" aria-label="Nhập từ khóa" aria-describedby="basic-addon2">
+                        <span class="input-group-text" id="basic-addon2">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                    </div>
                 </div>
-                <div class="clear"></div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="fs-3 text-danger">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    Tư vấn hỗ trợ
+                                    <br>
+                                    <strong class="text-danger">0987654321</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="fs-3 text-danger">
+                                        <i class="fa-regular fa-user"></i>
+                                    </div>
+                                </div>
+                                @{
+                                    var userSession = (Online_Shop.Common.UserLogin)Session["UserLogin"];
+                                }
+                                @if (userSession == null)
+                                {
+                                    <div class="col-9">
+                                        Xin chào!
+                                        <br>
+                                        <a class="text-decoration-none" href="@Url.Action("Login", "User")"><strong class="text-danger">Đăng nhập</strong></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-9">
+                                        <a class="text-decoration-none" href="@Url.Action("Account", "User")"><strong class="text-danger">Tài khoản</strong></a>
+                                        <br />
+                                        <a class="text-decoration-none text-black" href="@Url.Action("Logout", "User")">Đăng xuất</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="position-relative">
+                                <span class="fs-3 text-danger"><i class="fa-regular fa-heart"></i></span>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+                                </span>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="@Url.Action("Index", "Cart")" class="position-relative">
+                                <span class="fs-3 text-danger"><i class="fa-solid fa-cart-shopping"></i></span>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+                                </span>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="position-relative">
+                                <span class="fs-3 text-danger"><i class="fa-solid fa-code-compare"></i></span>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            @RenderSection("slide", false)
         </div>
-        <div class="main">
-            @RenderBody()
+    </section>
+
+    <section class="menu bg-danger">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 text-white py-3">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục sản phẩm
+                        </a>
+
+                        @{Html.RenderAction("ProductCategory", "Product");}
+                       
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <nav class="navbar navbar-expand-lg bg-danger">
+                        <div class="container-fluid">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white active" aria-current="page" href="/">Trang chủ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="@Url.Action("Index", "About")">Giới thiệu</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Sản phẩm
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="#">Tin tức</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="#">Câu hỏi thường gặp</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="#">Tuyển dụng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="@Url.Action("Index", "Contact")">Liên hệ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
+    </section>
+
+    @*@RenderSection("slide", false)*@
+
+    <div class="main">
+        @RenderBody()
     </div>
-    <div class="footer">
-        @{ Html.RenderAction("Footer", "Home");}
-    </div>
+
+    @Html.Partial("Footer")
+
+    <a href="#" id="toTop"><span id="toTopHover"> </span></a>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $().UItoTop({ easingType: 'easeOutQuart' });
 
         });
     </script>
-    <a href="#" id="toTop"><span id="toTopHover"> </span></a>
     <script src="/Assets/Client/js/controllers/baseController.js"></script>
-    @RenderSection("js", false);
+    @RenderSection("js", false)
     <script src="/Assets/Client/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
